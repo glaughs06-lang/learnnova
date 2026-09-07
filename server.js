@@ -1,7 +1,5 @@
 const express = require("express");
 const path = require("path");
-const Razorpay = require("razorpay");
-const crypto = require("crypto");
 
 const app = express();
 
@@ -9,72 +7,115 @@ app.use(express.json());
 app.use(express.static(__dirname));
 
 
-// ================================
-// RAZORPAY CONFIGURATION
-// ================================
+// =====================================
+// CASHFREE CONFIGURATION
+// =====================================
 
-if (
-  !process.env.RAZORPAY_KEY_ID ||
-  !process.env.RAZORPAY_KEY_SECRET
-) {
-  console.error("Razorpay environment variables are missing.");
-}
-
-
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET
-});
+// TEST MODE
+const CASHFREE_BASE_URL =
+  process.env.CASHFREE_ENV === "production"
+    ? "https://api.cashfree.com/pg"
+    : "https://sandbox.cashfree.com/pg";
 
 
-// ================================
+// =====================================
 // COURSES
-// Amount is in PAISA
-// ================================
+// Amount is in RUPEES
+// =====================================
 
 const courses = {
 
   web_development: {
     name: "Web Development",
-    amount: 49900
+    amount: 499
   },
 
   ethical_hacking: {
     name: "Ethical Hacking",
-    amount: 79900
+    amount: 799
   },
 
   digital_marketing: {
     name: "Digital Marketing",
-    amount: 19900
+    amount: 199
   },
 
   affiliate_marketing: {
     name: "Affiliate Marketing",
-    amount: 14900
+    amount: 149
   }
 
 };
 
 
-// ================================
-// CREATE PAYMENT ORDER
-// ================================
+// =====================================
+// CREATE CASHFREE PAYMENT LINK
+// =====================================
 
-app.post("/create-order", async (req, res) => {
+app.post("/create-payment-link", async (req, res) => {
 
   try {
 
-    const { courseId } = req.body;
+    console.log("Payment request:", req.body);
 
-    console.log("Create order request:", courseId);
+
+    // ---------------------------------
+    // CHECK CASHFREE KEYS
+    // ---------------------------------
+
+    if (
+      !process.env.CASHFREE_CLIENT_ID ||
+      !process.env.CASHFREE_CLIENT_SECRET
+    ) {
+
+      console.error(
+        "Cashfree environment variables are missing"
+      );
+
+      return res.status(500).json({
+        success: false,
+        error:
+          "Cashfree payment keys are not configured"
+      });
+
+    }
+
+
+    // ---------------------------------
+    // GET DATA
+    // ---------------------------------
+
+    const {
+      courseId,
+      customerName,
+      customerEmail,
+      customerPhone
+    } = req.body;
+
+
+    // ---------------------------------
+    // VALIDATE COURSE
+    // ---------------------------------
+
+    if (!courseId) {
+
+      return res.status(400).json({
+        success: false,
+        error: "Course ID is missing"
+      });
+
+    }
+
 
     const course = courses[courseId];
 
 
     if (!course) {
 
-      console.error("Invalid course ID:", courseId);
+      console.error(
+        "Invalid course:",
+        courseId
+      );
 
       return res.status(400).json({
         success: false,
@@ -84,51 +125,177 @@ app.post("/create-order", async (req, res) => {
     }
 
 
-    const order = await razorpay.orders.create({
+    // ---------------------------------
+    // VALIDATE CUSTOMER PHONE
+    // ---------------------------------
 
-      amount: course.amount,
+    if (
+      !customerPhone ||
+      customerPhone.length < 10
+    ) {
 
-      currency: "INR",
+      return res.status(400).json({
+        success: false,
+        error:
+          "Please enter a valid mobile number"
+      });
 
-      receipt:
-        "course_" +
-        courseId +
-        "_" +
-        Date.now(),
+    }
 
-      notes: {
-        courseId: courseId,
-        courseName: course.name
+
+    // ---------------------------------
+    // CREATE UNIQUE LINK ID
+    // Maximum length kept below 50 chars
+    // ---------------------------------
+
+    const linkId =
+      "LN_" +
+      Date.now() +
+      "_" +
+      Math.floor(
+        Math.random() * 10000
+      );
+
+
+    // ---------------------------------
+    // CASHFREE PAYMENT LINK DATA
+    // ---------------------------------
+
+    const paymentData = {
+
+      link_id: linkId,
+
+      link_amount: course.amount,
+
+      link_currency: "INR",
+
+      link_purpose:
+        "LearnNova - " +
+        course.name,
+
+      link_partial_payments: false,
+
+
+      customer_details: {
+
+        customer_name:
+          customerName ||
+          "LearnNova Student",
+
+        customer_email:
+          customerEmail ||
+          "",
+
+        customer_phone:
+          customerPhone
+
       }
 
-    });
+    };
 
 
-    console.log("Order created:", order.id);
+    console.log(
+      "Creating Cashfree payment link..."
+    );
 
+
+    // ---------------------------------
+    // CALL CASHFREE API
+    // ---------------------------------
+
+    const cashfreeResponse =
+      await fetch(
+        CASHFREE_BASE_URL + "/links",
+        {
+
+          method: "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/json",
+
+            "x-api-version":
+              "2025-01-01",
+
+            "x-client-id":
+              process.env
+                .CASHFREE_CLIENT_ID,
+
+            "x-client-secret":
+              process.env
+                .CASHFREE_CLIENT_SECRET
+
+          },
+
+          body:
+            JSON.stringify(
+              paymentData
+            )
+
+        }
+      );
+
+
+    const cashfreeData =
+      await cashfreeResponse.json();
+
+
+    console.log(
+      "Cashfree response:",
+      cashfreeData
+    );
+
+
+    // ---------------------------------
+    // CHECK ERROR
+    // ---------------------------------
+
+    if (!cashfreeResponse.ok) {
+
+      return res.status(
+        cashfreeResponse.status
+      ).json({
+
+        success: false,
+
+        error:
+          cashfreeData.message ||
+          cashfreeData.error ||
+          "Unable to create payment link"
+
+      });
+
+    }
+
+
+    // ---------------------------------
+    // SEND LINK TO WEBSITE
+    // ---------------------------------
 
     return res.json({
 
       success: true,
 
-      orderId: order.id,
+      course: course.name,
 
-      amount: order.amount,
+      amount: course.amount,
 
-      currency: order.currency,
+      paymentLink:
+        cashfreeData.link_url,
 
-      courseName: course.name,
-
-      keyId: process.env.RAZORPAY_KEY_ID
+      linkId:
+        cashfreeData.link_id
 
     });
 
   }
 
+
   catch (error) {
 
     console.error(
-      "CREATE ORDER ERROR:",
+      "PAYMENT LINK ERROR:",
       error
     );
 
@@ -138,9 +305,8 @@ app.post("/create-order", async (req, res) => {
       success: false,
 
       error:
-        error.description ||
         error.message ||
-        "Could not create payment order"
+        "Unable to create payment link"
 
     });
 
@@ -149,114 +315,114 @@ app.post("/create-order", async (req, res) => {
 });
 
 
-// ================================
-// VERIFY PAYMENT
-// ================================
+// =====================================
+// CHECK PAYMENT LINK STATUS
+// =====================================
 
-app.post("/verify-payment", (req, res) => {
+app.get(
+  "/payment-status/:linkId",
+  async (req, res) => {
 
-  try {
+    try {
 
-    const {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature
-    } = req.body;
+      const linkId =
+        req.params.linkId;
 
 
-    if (
-      !razorpay_order_id ||
-      !razorpay_payment_id ||
-      !razorpay_signature
-    ) {
+      const response =
+        await fetch(
 
-      return res.status(400).json({
-        success: false,
-        message: "Payment details are missing"
+          CASHFREE_BASE_URL +
+          "/links/" +
+          encodeURIComponent(linkId),
+
+          {
+
+            headers: {
+
+              "x-api-version":
+                "2025-01-01",
+
+              "x-client-id":
+                process.env
+                  .CASHFREE_CLIENT_ID,
+
+              "x-client-secret":
+                process.env
+                  .CASHFREE_CLIENT_SECRET
+
+            }
+
+          }
+
+        );
+
+
+      const data =
+        await response.json();
+
+
+      if (!response.ok) {
+
+        return res.status(
+          response.status
+        ).json({
+
+          success: false,
+
+          error:
+            data.message ||
+            "Unable to check payment"
+
+        });
+
+      }
+
+
+      return res.json({
+
+        success: true,
+
+        status:
+          data.link_status,
+
+        amount:
+          data.link_amount,
+
+        course:
+          data.link_purpose
+
       });
 
     }
 
 
-    const body =
-      razorpay_order_id +
-      "|" +
-      razorpay_payment_id;
-
-
-    const expectedSignature = crypto
-      .createHmac(
-        "sha256",
-        process.env.RAZORPAY_KEY_SECRET
-      )
-      .update(body)
-      .digest("hex");
-
-
-    if (
-      expectedSignature !==
-      razorpay_signature
-    ) {
+    catch (error) {
 
       console.error(
-        "Payment signature verification failed"
+        "STATUS CHECK ERROR:",
+        error
       );
 
 
-      return res.status(400).json({
+      return res.status(500).json({
 
         success: false,
 
-        message:
-          "Payment verification failed"
+        error:
+          "Unable to check payment status"
 
       });
 
     }
 
-
-    console.log(
-      "Payment verified:",
-      razorpay_payment_id
-    );
-
-
-    return res.json({
-
-      success: true,
-
-      message:
-        "Payment verified successfully"
-
-    });
-
   }
-
-  catch (error) {
-
-    console.error(
-      "VERIFY PAYMENT ERROR:",
-      error
-    );
+);
 
 
-    return res.status(500).json({
-
-      success: false,
-
-      message:
-        "Payment verification error"
-
-    });
-
-  }
-
-});
-
-
-// ================================
+// =====================================
 // HOME PAGE
-// ================================
+// =====================================
 
 app.get("/", (req, res) => {
 
@@ -270,12 +436,13 @@ app.get("/", (req, res) => {
 });
 
 
-// ================================
-// START SERVER
-// ================================
+// =====================================
+// SERVER
+// =====================================
 
 const PORT =
-  process.env.PORT || 3000;
+  process.env.PORT ||
+  3000;
 
 
 app.listen(PORT, () => {
