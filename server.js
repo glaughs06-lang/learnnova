@@ -13,9 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 3000;
 
-const APP_URL =
-  process.env.APP_URL ||
-  "https://learnnova-1.onrender.com";
+const APP_URL = "https://learnnova-1.onrender.com";
 
 const CASHFREE_ENV =
   process.env.CASHFREE_ENV || "sandbox";
