@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
 
   <title>LearnNova - Learn Today. Lead Tomorrow.</title>
 
   <style>
+
     * {
       margin: 0;
       padding: 0;
@@ -18,6 +22,8 @@
       background: #f7f8fc;
       color: #1f2937;
     }
+
+    /* NAVBAR */
 
     nav {
       background: white;
@@ -47,6 +53,11 @@
       text-decoration: none;
       color: #374151;
       font-weight: 600;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover {
+      color: #6b5cff;
     }
 
     .btn {
@@ -60,10 +71,18 @@
       font-size: 15px;
     }
 
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    /* HERO */
+
     .hero {
       padding: 90px 7%;
       text-align: center;
-      background: linear-gradient(135deg, #f4f1ff, #ffffff);
+      background:
+        linear-gradient(135deg, #f4f1ff, #ffffff);
     }
 
     .hero h1 {
@@ -98,6 +117,8 @@
       border: 2px solid #6b5cff;
     }
 
+    /* STATS */
+
     .stats {
       display: flex;
       justify-content: center;
@@ -105,6 +126,10 @@
       padding: 40px;
       background: white;
       flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
     }
 
     .stat h2 {
@@ -116,6 +141,8 @@
       color: #6b7280;
       margin-top: 8px;
     }
+
+    /* COURSES */
 
     .courses {
       padding: 80px 7%;
@@ -143,18 +170,19 @@
 
     .course-card {
       background: white;
-      padding: 25px;
+      padding: 30px;
       border-radius: 18px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+      box-shadow:
+        0 5px 20px rgba(0,0,0,0.06);
       transition: 0.3s;
     }
 
     .course-card:hover {
-      transform: translateY(-8px);
+      transform: translateY(-7px);
     }
 
     .course-icon {
-      font-size: 45px;
+      font-size: 42px;
       margin-bottom: 18px;
     }
 
@@ -165,19 +193,21 @@
 
     .course-card p {
       color: #6b7280;
-      line-height: 1.5;
-      margin-bottom: 20px;
+      line-height: 1.6;
     }
 
     .price {
-      font-size: 22px;
+      margin-top: 20px;
+      font-size: 20px;
       font-weight: bold;
       color: #6b5cff;
     }
 
+    /* WHY SECTION */
+
     .why {
       padding: 80px 7%;
-      background: #ffffff;
+      background: white;
     }
 
     .features {
@@ -187,31 +217,125 @@
     }
 
     .feature {
-      padding: 25px;
-      text-align: center;
-      border-radius: 15px;
       background: #f7f8fc;
+      padding: 25px;
+      border-radius: 15px;
     }
 
     .feature h3 {
-      margin: 15px 0 10px;
+      margin-bottom: 12px;
     }
 
     .feature p {
       color: #6b7280;
-      font-size: 14px;
+      line-height: 1.6;
     }
 
+    /* FOOTER */
+
     footer {
-      background: #111827;
+      background: #1f2937;
       color: white;
       text-align: center;
-      padding: 30px;
+      padding: 40px 20px;
     }
+
+    /* LOGIN POPUP */
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.55);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .popup-box {
+      width: 100%;
+      max-width: 400px;
+      background: white;
+      padding: 35px;
+      border-radius: 20px;
+      position: relative;
+      box-shadow:
+        0 15px 50px rgba(0,0,0,0.2);
+    }
+
+    .popup-box h2 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .popup-box > p {
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 25px;
+    }
+
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      font-size: 30px;
+      cursor: pointer;
+      color: #6b7280;
+    }
+
+    .popup-box input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 15px;
+    }
+
+    .popup-box input:focus {
+      outline: none;
+      border-color: #6b5cff;
+    }
+
+    .popup-box .btn {
+      width: 100%;
+      margin-top: 5px;
+    }
+
+    .switch-text {
+      text-align: center;
+      margin-top: 20px;
+      color: #6b7280;
+    }
+
+    .switch-text span {
+      color: #6b5cff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .user-name {
+      font-weight: bold;
+      color: #6b5cff;
+    }
+
+    /* MOBILE */
 
     @media (max-width: 800px) {
 
+      nav {
+        padding: 18px 5%;
+      }
+
       .nav-links {
+        gap: 12px;
+      }
+
+      .nav-links a {
         display: none;
       }
 
@@ -220,7 +344,7 @@
       }
 
       .hero h1 {
-        font-size: 40px;
+        font-size: 42px;
       }
 
       .hero-buttons {
@@ -239,144 +363,795 @@
       .stats {
         gap: 30px;
       }
+
     }
+
   </style>
+
 </head>
+
 
 <body>
 
+
+  <!-- NAVBAR -->
+
   <nav>
-    <div class="logo">🎓 LearnNova</div>
+
+    <div class="logo">
+      🎓 LearnNova
+    </div>
 
     <div class="nav-links">
+
       <a href="#">Home</a>
-      <a href="#courses">Courses</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
-      <button class="btn">Login</button>
+
+      <a href="#courses">
+        Courses
+      </a>
+
+      <a href="#about">
+        About
+      </a>
+
+      <a href="#contact">
+        Contact
+      </a>
+
+      <span
+        id="userName"
+        class="user-name">
+      </span>
+
+      <button
+        id="loginButton"
+        class="btn"
+        onclick="openLogin()">
+
+        Login
+
+      </button>
+
     </div>
+
   </nav>
+
+
+  <!-- HERO -->
 
   <section class="hero">
 
     <h1>
+
       Learn Skills.<br>
-      Build Your <span>Future.</span>
+
+      Build Your
+      <span>Future.</span>
+
     </h1>
 
+
     <p>
-      LearnNova helps you learn in-demand skills from expert instructors,
-      track your progress, and build a successful future.
+
+      LearnNova helps you learn
+      in-demand skills from expert
+      instructors, track your progress,
+      and build a successful future.
+
     </p>
 
+
     <div class="hero-buttons">
-      <button class="btn">Explore Courses</button>
-      <button class="btn secondary">Start Learning Free</button>
+
+      <button
+        class="btn"
+        onclick="goToCourses()">
+
+        Explore Courses
+
+      </button>
+
+
+      <button
+        class="btn secondary"
+        onclick="openSignup()">
+
+        Start Learning Free
+
+      </button>
+
     </div>
 
   </section>
+
+
+  <!-- STATS -->
 
   <section class="stats">
 
     <div class="stat">
+
       <h2>10,000+</h2>
+
       <p>Active Students</p>
+
     </div>
 
+
     <div class="stat">
+
       <h2>50+</h2>
+
       <p>Premium Courses</p>
+
     </div>
 
+
     <div class="stat">
+
       <h2>25+</h2>
+
       <p>Expert Mentors</p>
+
     </div>
 
+
     <div class="stat">
+
       <h2>4.9 ⭐</h2>
+
       <p>Student Rating</p>
+
     </div>
 
   </section>
 
-  <section class="courses" id="courses">
+
+  <!-- COURSES -->
+
+  <section
+    class="courses"
+    id="courses">
+
 
     <div class="section-title">
-      <h2>Explore Popular Courses</h2>
-      <p>Learn the skills that companies and the future demand.</p>
+
+      <h2>
+        Explore Popular Courses
+      </h2>
+
+      <p>
+        Learn the skills that companies
+        and the future demand.
+      </p>
+
     </div>
+
 
     <div class="course-grid">
 
-      <div class="course-card">
-        <div class="course-icon">💻</div>
-        <h3>Web Development</h3>
-        <p>Learn HTML, CSS, JavaScript and build real-world projects.</p>
-        <div class="price">₹999</div>
-      </div>
 
       <div class="course-card">
-        <div class="course-icon">🤖</div>
-        <h3>Artificial Intelligence</h3>
-        <p>Learn AI tools, automation and modern artificial intelligence.</p>
-        <div class="price">₹1,499</div>
+
+        <div class="course-icon">
+          💻
+        </div>
+
+        <h3>
+          Web Development
+        </h3>
+
+        <p>
+          Learn HTML, CSS, JavaScript
+          and build real-world projects.
+        </p>
+
+        <div class="price">
+          ₹999
+        </div>
+
       </div>
 
+
+
       <div class="course-card">
-        <div class="course-icon">📈</div>
-        <h3>Digital Marketing</h3>
-        <p>Master social media, advertising and online business growth.</p>
-        <div class="price">₹799</div>
+
+        <div class="course-icon">
+          🤖
+        </div>
+
+        <h3>
+          Artificial Intelligence
+        </h3>
+
+        <p>
+          Learn AI tools, automation
+          and modern artificial intelligence.
+        </p>
+
+        <div class="price">
+          ₹1,499
+        </div>
+
       </div>
+
+
+
+      <div class="course-card">
+
+        <div class="course-icon">
+          📈
+        </div>
+
+        <h3>
+          Digital Marketing
+        </h3>
+
+        <p>
+          Master social media,
+          advertising and online
+          business growth.
+        </p>
+
+        <div class="price">
+          ₹799
+        </div>
+
+      </div>
+
 
     </div>
 
   </section>
 
-  <section class="why">
+
+  <!-- WHY LEARNNOVA -->
+
+  <section
+    class="why"
+    id="about">
+
 
     <div class="section-title">
-      <h2>Why LearnNova?</h2>
-      <p>A smarter way to learn and grow your career.</p>
+
+      <h2>
+        Why LearnNova?
+      </h2>
+
+      <p>
+        A smarter way to learn
+        and grow your career.
+      </p>
+
     </div>
+
 
     <div class="features">
 
-      <div class="feature">
-        <h3>🎥 Video Learning</h3>
-        <p>Learn anytime with high-quality video lessons.</p>
-      </div>
 
       <div class="feature">
-        <h3>📊 Track Progress</h3>
-        <p>See your learning progress and achievements.</p>
+
+        <h3>
+          🎥 Video Learning
+        </h3>
+
+        <p>
+          Learn anytime with
+          high-quality video lessons.
+        </p>
+
       </div>
 
-      <div class="feature">
-        <h3>🏆 Certificates</h3>
-        <p>Earn certificates after completing courses.</p>
-      </div>
+
 
       <div class="feature">
-        <h3>🤖 AI Assistant</h3>
-        <p>Get smart learning help whenever you need it.</p>
+
+        <h3>
+          📊 Track Progress
+        </h3>
+
+        <p>
+          See your learning progress
+          and achievements.
+        </p>
+
       </div>
+
+
+
+      <div class="feature">
+
+        <h3>
+          🏆 Certificates
+        </h3>
+
+        <p>
+          Earn certificates after
+          completing courses.
+        </p>
+
+      </div>
+
+
+
+      <div class="feature">
+
+        <h3>
+          🤖 AI Assistant
+        </h3>
+
+        <p>
+          Get smart learning help
+          whenever you need it.
+        </p>
+
+      </div>
+
 
     </div>
 
   </section>
 
-  <footer>
-    <h3>🎓 LearnNova</h3>
+
+  <!-- FOOTER -->
+
+  <footer id="contact">
+
+    <h3>
+      🎓 LearnNova
+    </h3>
+
+
     <p style="margin-top:10px;">
+
       Learn Today. Lead Tomorrow.
+
     </p>
+
 
     <p style="margin-top:20px;">
-      © 2026 LearnNova. All Rights Reserved.
+
+      © 2026 LearnNova.
+      All Rights Reserved.
+
     </p>
+
   </footer>
 
+
+  <!-- LOGIN POPUP -->
+
+  <div
+    id="loginPopup"
+    class="popup">
+
+
+    <div class="popup-box">
+
+
+      <span
+        class="close"
+        onclick="closePopup()">
+
+        ×
+
+      </span>
+
+
+      <h2>
+        Welcome Back 👋
+      </h2>
+
+
+      <p>
+        Login to continue learning.
+      </p>
+
+
+      <input
+        type="email"
+        id="loginEmail"
+        placeholder="Enter your email">
+
+
+      <input
+        type="password"
+        id="loginPassword"
+        placeholder="Enter your password">
+
+
+      <button
+        class="btn"
+        onclick="loginUser()">
+
+        Login
+
+      </button>
+
+
+      <div class="switch-text">
+
+        New to LearnNova?
+
+        <span onclick="openSignup()">
+
+          Create Account
+
+        </span>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+
+  <!-- SIGNUP POPUP -->
+
+  <div
+    id="signupPopup"
+    class="popup">
+
+
+    <div class="popup-box">
+
+
+      <span
+        class="close"
+        onclick="closePopup()">
+
+        ×
+
+      </span>
+
+
+      <h2>
+        Join LearnNova 🎓
+      </h2>
+
+
+      <p>
+        Create your free account.
+      </p>
+
+
+      <input
+        type="text"
+        id="signupName"
+        placeholder="Enter your name">
+
+
+      <input
+        type="email"
+        id="signupEmail"
+        placeholder="Enter your email">
+
+
+      <input
+        type="password"
+        id="signupPassword"
+        placeholder="Create password">
+
+
+      <button
+        class="btn"
+        onclick="signupUser()">
+
+        Create Account
+
+      </button>
+
+
+      <div class="switch-text">
+
+        Already have an account?
+
+        <span onclick="openLogin()">
+
+          Login
+
+        </span>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+
+  <!-- JAVASCRIPT -->
+
+  <script>
+
+
+    function goToCourses() {
+
+      document
+        .getElementById("courses")
+        .scrollIntoView({
+
+          behavior: "smooth"
+
+        });
+
+    }
+
+
+
+    function openLogin() {
+
+      closePopup();
+
+      document
+        .getElementById("loginPopup")
+        .style.display = "flex";
+
+    }
+
+
+
+    function openSignup() {
+
+      closePopup();
+
+      document
+        .getElementById("signupPopup")
+        .style.display = "flex";
+
+    }
+
+
+
+    function closePopup() {
+
+      document
+        .getElementById("loginPopup")
+        .style.display = "none";
+
+
+      document
+        .getElementById("signupPopup")
+        .style.display = "none";
+
+    }
+
+
+
+    function signupUser() {
+
+      const name =
+        document
+        .getElementById("signupName")
+        .value
+        .trim();
+
+
+      const email =
+        document
+        .getElementById("signupEmail")
+        .value
+        .trim();
+
+
+      const password =
+        document
+        .getElementById("signupPassword")
+        .value;
+
+
+      if (
+        name === "" ||
+        email === "" ||
+        password === ""
+      ) {
+
+        alert(
+          "Please fill all details."
+        );
+
+        return;
+
+      }
+
+
+      const user = {
+
+        name: name,
+        email: email,
+        password: password
+
+      };
+
+
+      localStorage.setItem(
+        "learnNovaUser",
+        JSON.stringify(user)
+      );
+
+
+      alert(
+        "Account created successfully! 🎉"
+      );
+
+
+      closePopup();
+
+
+      updateUser();
+
+    }
+
+
+
+    function loginUser() {
+
+      const email =
+        document
+        .getElementById("loginEmail")
+        .value
+        .trim();
+
+
+      const password =
+        document
+        .getElementById("loginPassword")
+        .value;
+
+
+      const savedUser =
+        localStorage.getItem(
+          "learnNovaUser"
+        );
+
+
+      if (!savedUser) {
+
+        alert(
+          "No account found. Please create an account first."
+        );
+
+        openSignup();
+
+        return;
+
+      }
+
+
+      const user =
+        JSON.parse(savedUser);
+
+
+      if (
+        email === user.email &&
+        password === user.password
+      ) {
+
+        localStorage.setItem(
+          "learnNovaLoggedIn",
+          "true"
+        );
+
+
+        alert(
+          "Login successful! Welcome to LearnNova 🎉"
+        );
+
+
+        closePopup();
+
+
+        updateUser();
+
+      }
+
+      else {
+
+        alert(
+          "Incorrect email or password."
+        );
+
+      }
+
+    }
+
+
+
+    function logoutUser() {
+
+      localStorage.removeItem(
+        "learnNovaLoggedIn"
+      );
+
+
+      updateUser();
+
+
+      alert(
+        "You have been logged out."
+      );
+
+    }
+
+
+
+    function updateUser() {
+
+      const savedUser =
+        localStorage.getItem(
+          "learnNovaUser"
+        );
+
+
+      const loggedIn =
+        localStorage.getItem(
+          "learnNovaLoggedIn"
+        );
+
+
+      const loginButton =
+        document
+        .getElementById(
+          "loginButton"
+        );
+
+
+      const userName =
+        document
+        .getElementById(
+          "userName"
+        );
+
+
+      if (
+        savedUser &&
+        loggedIn === "true"
+      ) {
+
+        const user =
+          JSON.parse(savedUser);
+
+
+        userName.innerText =
+          "Hi, " + user.name;
+
+
+        loginButton.innerText =
+          "Logout";
+
+
+        loginButton.onclick =
+          logoutUser;
+
+      }
+
+      else {
+
+        userName.innerText = "";
+
+
+        loginButton.innerText =
+          "Login";
+
+
+        loginButton.onclick =
+          openLogin;
+
+      }
+
+    }
+
+
+
+    updateUser();
+
+
+  </script>
+
+
 </body>
-</html>
+
+</html
