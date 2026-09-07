@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>LearnNova - Learn Today. Lead Tomorrow.</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f7f8fc;
+      color: #1f2937;
+    }
+
+    nav {
+      background: white;
+      padding: 18px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #6b5cff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #374151;
+      font-weight: 600;
+    }
+
+    .btn {
+      border: none;
+      padding: 13px 24px;
+      border-radius: 10px;
+      background: #6b5cff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .hero {
+      padding: 90px 7%;
+      text-align: center;
+      background: linear-gradient(135deg, #f4f1ff, #ffffff);
+    }
+
+    .hero h1 {
+      font-size: 60px;
+      max-width: 850px;
+      margin: auto;
+      line-height: 1.1;
+    }
+
+    .hero h1 span {
+      color: #6b5cff;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: 25px auto;
+      font-size: 19px;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .secondary {
+      background: white;
+      color: #6b5cff;
+      border: 2px solid #6b5cff;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 70px;
+      padding: 40px;
+      background: white;
+      flex-wrap: wrap;
+    }
+
+    .stat h2 {
+      font-size: 32px;
+      color: #6b5cff;
+    }
+
+    .stat p {
+      color: #6b7280;
+      margin-top: 8px;
+    }
+
+    .courses {
+      padding: 80px 7%;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .section-title h2 {
+      font-size: 40px;
+    }
+
+    .section-title p {
+      margin-top: 12px;
+      color: #6b7280;
+    }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+
+    .course-card {
+      background: white;
+      padding: 25px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+      transition: 0.3s;
+    }
+
+    .course-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .course-icon {
+      font-size: 45px;
+      margin-bottom: 18px;
+    }
+
+    .course-card h3 {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .course-card p {
+      color: #6b7280;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .price {
+      font-size: 22px;
+      font-weight: bold;
+      color: #6b5cff;
+    }
+
+    .why {
+      padding: 80px 7%;
+      background: #ffffff;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .feature {
+      padding: 25px;
+      text-align: center;
+      border-radius: 15px;
+      background: #f7f8fc;
+    }
+
+    .feature h3 {
+      margin: 15px 0 10px;
+    }
+
+    .feature p {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    footer {
+      background: #111827;
+      color: white;
+      text-align: center;
+      padding: 30px;
+    }
+
+    @media (max-width: 800px) {
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 70px 20px;
+      }
+
+      .hero h1 {
+        font-size: 40px;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .course-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .features {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stats {
+        gap: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="logo">🎓 LearnNova</div>
+
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#courses">Courses</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+      <button class="btn">Login</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+
+    <h1>
+      Learn Skills.<br>
+      Build Your <span>Future.</span>
+    </h1>
+
+    <p>
+      LearnNova helps you learn in-demand skills from expert instructors,
+      track your progress, and build a successful future.
+    </p>
+
+    <div class="hero-buttons">
+      <button class="btn">Explore Courses</button>
+      <button class="btn secondary">Start Learning Free</button>
+    </div>
+
+  </section>
+
+  <section class="stats">
+
+    <div class="stat">
+      <h2>10,000+</h2>
+      <p>Active Students</p>
+    </div>
+
+    <div class="stat">
+      <h2>50+</h2>
+      <p>Premium Courses</p>
+    </div>
+
+    <div class="stat">
+      <h2>25+</h2>
+      <p>Expert Mentors</p>
+    </div>
+
+    <div class="stat">
+      <h2>4.9 ⭐</h2>
+      <p>Student Rating</p>
+    </div>
+
+  </section>
+
+  <section class="courses" id="courses">
+
+    <div class="section-title">
+      <h2>Explore Popular Courses</h2>
+      <p>Learn the skills that companies and the future demand.</p>
+    </div>
+
+    <div class="course-grid">
+
+      <div class="course-card">
+        <div class="course-icon">💻</div>
+        <h3>Web Development</h3>
+        <p>Learn HTML, CSS, JavaScript and build real-world projects.</p>
+        <div class="price">₹999</div>
+      </div>
+
+      <div class="course-card">
+        <div class="course-icon">🤖</div>
+        <h3>Artificial Intelligence</h3>
+        <p>Learn AI tools, automation and modern artificial intelligence.</p>
+        <div class="price">₹1,499</div>
+      </div>
+
+      <div class="course-card">
+        <div class="course-icon">📈</div>
+        <h3>Digital Marketing</h3>
+        <p>Master social media, advertising and online business growth.</p>
+        <div class="price">₹799</div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="why">
+
+    <div class="section-title">
+      <h2>Why LearnNova?</h2>
+      <p>A smarter way to learn and grow your career.</p>
+    </div>
+
+    <div class="features">
+
+      <div class="feature">
+        <h3>🎥 Video Learning</h3>
+        <p>Learn anytime with high-quality video lessons.</p>
+      </div>
+
+      <div class="feature">
+        <h3>📊 Track Progress</h3>
+        <p>See your learning progress and achievements.</p>
+      </div>
+
+      <div class="feature">
+        <h3>🏆 Certificates</h3>
+        <p>Earn certificates after completing courses.</p>
+      </div>
+
+      <div class="feature">
+        <h3>🤖 AI Assistant</h3>
+        <p>Get smart learning help whenever you need it.</p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <footer>
+    <h3>🎓 LearnNova</h3>
+    <p style="margin-top:10px;">
+      Learn Today. Lead Tomorrow.
+    </p>
+
+    <p style="margin-top:20px;">
+      © 2026 LearnNova. All Rights Reserved.
+    </p>
+  </footer>
+
+</body>
+</html>
