@@ -616,7 +616,6 @@ async function loadDashboard() {
 
 function startCourse() {
 
-
   const purchasedCourse =
     JSON.parse(
 
@@ -629,18 +628,43 @@ function startCourse() {
     );
 
 
-  alert(
+  const coursePages = {
 
-    "Welcome to " +
+    web_development:
+      "/web-development.html",
 
-    (
-      purchasedCourse.courseName ||
+    ethical_hacking:
+      "/ethical-hacking.html",
 
-      "your course"
-    )
+    digital_marketing:
+      "/digital-marketing.html",
 
-  );
+    affiliate_marketing:
+      "/affiliate-marketing.html"
 
+  };
+
+
+  const coursePage =
+    coursePages[
+      purchasedCourse.courseId
+    ];
+
+
+  if (coursePage) {
+
+    window.location.href =
+      coursePage;
+
+  }
+
+  else {
+
+    alert(
+      "Course page is not available yet."
+    );
+
+  }
 
 }
 
