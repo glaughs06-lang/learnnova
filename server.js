@@ -6,105 +6,266 @@ const crypto = require("crypto");
 const app = express();
 
 app.use(express.json());
+
 app.use(express.static(__dirname));
 
+
 const razorpay = new Razorpay({
+
   key_id: process.env.RAZORPAY_KEY_ID,
+
   key_secret: process.env.RAZORPAY_KEY_SECRET
+
 });
+
 
 const courses = {
-  "Digital Marketing": 199,
-  "Web Development": 499,
-  "Ethical Hacking": 799,
-  "Affiliate Marketing": 149
+
+  web_development: {
+
+    name: "Web Development",
+
+    amount: 49900
+
+  },
+
+
+  ethical_hacking: {
+
+    name: "Ethical Hacking",
+
+    amount: 79900
+
+  },
+
+
+  digital_marketing: {
+
+    name: "Digital Marketing",
+
+    amount: 19900
+
+  },
+
+
+  affiliate_marketing: {
+
+    name: "Affiliate Marketing",
+
+    amount: 14900
+
+  }
+
 };
 
-// Create Razorpay Order
-app.post("/create-order", async (req, res) => {
-  try {
-    const { course } = req.body;
 
-    if (!courses[course]) {
+
+// CREATE PAYMENT ORDER
+
+app.post("/create-order", async (req, res) => {
+
+  try {
+
+    const courseId = req.body.courseId;
+
+
+    const course = courses[courseId];
+
+
+    if (!course) {
+
       return res.status(400).json({
+
         success: false,
-        message: "Invalid course selected"
+
+        error: "Invalid course"
+
       });
+
     }
 
-    const options = {
-      amount: courses[course] * 100,
-      currency: "INR",
-      receipt: "course_" + Date.now()
-    };
 
-    const order = await razorpay.orders.create(options);
+    const order = await razorpay.orders.create({
+
+      amount: course.amount,
+
+      currency: "INR",
+
+      receipt:
+
+        "course_" +
+        courseId +
+        "_" +
+        Date.now()
+
+    });
+
 
     res.json({
+
       success: true,
+
       order: order,
-      key: process.env.RAZORPAY_KEY_ID
+
+      course: course.name
+
     });
 
-  } catch (error) {
+  }
+
+  catch (error) {
+
     console.error(error);
 
+
     res.status(500).json({
+
       success: false,
-      message: "Payment order creation failed"
+
+      error: "Could not create payment order"
+
     });
+
   }
+
 });
 
-// Verify Payment
+
+
+
+// VERIFY PAYMENT
+
 app.post("/verify-payment", (req, res) => {
+
   try {
+
     const {
+
       razorpay_order_id,
+
       razorpay_payment_id,
+
       razorpay_signature
+
     } = req.body;
 
-    const body =
-      razorpay_order_id + "|" + razorpay_payment_id;
 
-    const expectedSignature = crypto
+    const body =
+
+      razorpay_order_id +
+
+      "|" +
+
+      razorpay_payment_id;
+
+
+    const expectedSignature =
+
+      crypto
+
       .createHmac(
+
         "sha256",
+
         process.env.RAZORPAY_KEY_SECRET
+
       )
-      .update(body.toString())
+
+      .update(body)
+
       .digest("hex");
 
-    if (expectedSignature === razorpay_signature) {
+
+    if (
+
+      expectedSignature ===
+
+      razorpay_signature
+
+    ) {
+
       return res.json({
+
         success: true,
-        message: "Payment verified successfully!"
+
+        message:
+
+          "Payment verified successfully"
+
       });
+
     }
 
-    res.status(400).json({
+
+    return res.status(400).json({
+
       success: false,
-      message: "Payment verification failed"
+
+      message:
+
+        "Payment verification failed"
+
     });
 
-  } catch (error) {
+  }
+
+  catch (error) {
+
     console.error(error);
 
+
     res.status(500).json({
+
       success: false,
-      message: "Payment verification error"
+
+      message:
+
+        "Payment verification error"
+
     });
+
   }
+
 });
 
-// Open Website
+
+
+
+// HOME PAGE
+
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+
+  res.sendFile(
+
+    path.join(
+
+      __dirname,
+
+      "index.html"
+
+    )
+
+  );
+
 });
 
-const PORT = process.env.PORT || 3000;
+
+
+const PORT =
+
+  process.env.PORT ||
+
+  3000;
+
 
 app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
+
+  console.log(
+
+    "LearnNova server running on port " +
+
+    PORT
+
+  );
+
 });
