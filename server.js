@@ -1,7 +1,7 @@
 const express = require("express");
+const path = require("path");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
-const path = require("path");
 
 const app = express();
 
@@ -14,84 +14,97 @@ const razorpay = new Razorpay({
 });
 
 const courses = {
-  digital_marketing: {
-    name: "Digital Marketing",
-    amount: 19900
-  },
-  web_development: {
-    name: "Web Development",
-    amount: 49900
-  },
-  ethical_hacking: {
-    name: "Ethical Hacking",
-    amount: 79900
-  },
-  affiliate_marketing: {
-    name: "Affiliate Marketing",
-    amount: 14900
-  }
+  "Digital Marketing": 199,
+  "Web Development": 499,
+  "Ethical Hacking": 799,
+  "Affiliate Marketing": 149
 };
 
+// Create Razorpay Order
 app.post("/create-order", async (req, res) => {
   try {
-    const course = courses[req.body.course];
+    const { course } = req.body;
 
-    if (!course) {
-      return res.status(400).json({ error: "Invalid course" });
+    if (!courses[course]) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid course selected"
+      });
     }
 
-    const order = await razorpay.orders.create({
-      amount: course.amount,
+    const options = {
+      amount: courses[course] * 100,
       currency: "INR",
       receipt: "course_" + Date.now()
-    });
+    };
+
+    const order = await razorpay.orders.create(options);
 
     res.json({
-      order,
-      course
+      success: true,
+      order: order,
+      key: process.env.RAZORPAY_KEY_ID
     });
 
   } catch (error) {
     console.error(error);
+
     res.status(500).json({
-      error: "Could not create payment order"
+      success: false,
+      message: "Payment order creation failed"
     });
   }
 });
 
+// Verify Payment
 app.post("/verify-payment", (req, res) => {
-  const {
-    razorpay_order_id,
-    razorpay_payment_id,
-    razorpay_signature
-  } = req.body;
+  try {
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature
+    } = req.body;
 
-  const body =
-    razorpay_order_id + "|" + razorpay_payment_id;
+    const body =
+      razorpay_order_id + "|" + razorpay_payment_id;
 
-  const expectedSignature = crypto
-    .createHmac(
-      "sha256",
-      process.env.RAZORPAY_KEY_SECRET
-    )
-    .update(body)
-    .digest("hex");
+    const expectedSignature = crypto
+      .createHmac(
+        "sha256",
+        process.env.RAZORPAY_KEY_SECRET
+      )
+      .update(body.toString())
+      .digest("hex");
 
-  if (expectedSignature === razorpay_signature) {
-    res.json({
-      success: true,
-      message: "Payment verified successfully"
-    });
-  } else {
+    if (expectedSignature === razorpay_signature) {
+      return res.json({
+        success: true,
+        message: "Payment verified successfully!"
+      });
+    }
+
     res.status(400).json({
       success: false,
       message: "Payment verification failed"
     });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Payment verification error"
+    });
   }
+});
+
+// Open Website
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log("Server running on port " + PORT);
 });
