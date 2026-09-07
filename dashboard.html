@@ -7,8 +7,8 @@
 <meta charset="UTF-8">
 
 <meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 >
 
 <title>
@@ -164,14 +164,6 @@ h1 {
 }
 
 
-.course-card h2 {
-
-  margin-bottom:
-    15px;
-
-}
-
-
 .success {
 
   color:
@@ -260,6 +252,7 @@ Logout
 
 <div class="container">
 
+
 <h1>
 
 My Dashboard
@@ -292,7 +285,41 @@ Verifying your payment...
 <script>
 
 
+function getLinkId() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const urlLinkId =
+    params.get(
+      "link_id"
+    );
+
+
+  if (urlLinkId) {
+
+    return urlLinkId;
+
+  }
+
+
+  return localStorage.getItem(
+    "learnNovaPendingPayment"
+  );
+
+}
+
+
+
+// =================================
+// LOAD DASHBOARD
+// =================================
+
 async function loadDashboard() {
+
 
   const content =
     document.getElementById(
@@ -301,22 +328,40 @@ async function loadDashboard() {
 
 
   const linkId =
-    localStorage.getItem(
-      "learnNovaPendingPayment"
-    );
+    getLinkId();
 
+
+  // -------------------------------
+  // NO PAYMENT FOUND
+  // -------------------------------
 
   if (!linkId) {
 
-    content.innerHTML =
-      `
+    content.innerHTML = `
+
       <div class="course-card">
-        <h2>No pending payment found</h2>
+
+        <h2>
+          No Payment Found
+        </h2>
+
         <p>
           Please purchase a course first.
         </p>
+
+
+        <button
+          class="start-btn"
+          onclick="window.location.href='/'"
+        >
+
+          Explore Courses
+
+        </button>
+
       </div>
-      `;
+
+    `;
 
     return;
 
@@ -324,6 +369,11 @@ async function loadDashboard() {
 
 
   try {
+
+
+    // -----------------------------
+    // VERIFY PAYMENT
+    // -----------------------------
 
     const response =
       await fetch(
@@ -341,68 +391,104 @@ async function loadDashboard() {
 
 
     if (
+
       !response.ok ||
+
       !data.success
+
     ) {
 
       throw new Error(
+
         data.error ||
-        "Unable to verify payment"
+
+        "Unable to verify payment."
+
       );
 
     }
 
 
+    // -----------------------------
+    // PAYMENT NOT COMPLETE
+    // -----------------------------
+
     if (!data.paid) {
 
-      content.innerHTML =
-        `
+
+      content.innerHTML = `
+
         <div class="course-card">
 
           <h2>
-            Payment not completed
+            Payment Not Completed
           </h2>
 
+
           <p>
-            Current payment status:
+
+            Current Status:
+
             <strong>
+
               ${data.status}
+
             </strong>
+
           </p>
+
 
           <button
             class="start-btn"
             onclick="window.location.href='/'"
           >
+
             Back to Courses
+
           </button>
 
         </div>
-        `;
+
+      `;
+
 
       return;
 
     }
 
 
-    // PAYMENT SUCCESSFUL
+    // -----------------------------
+    // SAVE PURCHASED COURSE
+    // -----------------------------
+
+    const purchasedCourse = {
+
+      linkId:
+        data.linkId,
+
+      courseId:
+        data.courseId,
+
+      courseName:
+        data.courseName,
+
+      amount:
+        data.amount,
+
+      purchasedAt:
+        new Date()
+        .toISOString()
+
+    };
+
 
     localStorage.setItem(
 
       "learnNovaPurchasedCourse",
 
-      JSON.stringify({
-
-        linkId:
-          data.linkId,
-
-        courseName:
-          data.courseName,
-
-        amount:
-          data.amount
-
-      })
+      JSON.stringify(
+        purchasedCourse
+      )
 
     );
 
@@ -412,10 +498,14 @@ async function loadDashboard() {
     );
 
 
-    content.innerHTML =
-      `
+    // -----------------------------
+    // PAYMENT SUCCESS
+    // -----------------------------
+
+    content.innerHTML = `
 
       <div class="course-card">
+
 
         <div class="success">
 
@@ -434,19 +524,22 @@ async function loadDashboard() {
         <p>
 
           Congratulations!
-          Your course has been unlocked.
+
+          Your course has been
+          successfully unlocked.
 
         </p>
 
 
         <p
           style="
-            margin-top:10px;
+            margin-top:15px;
             color:#6b7280;
           "
         >
 
           Amount Paid:
+
           ₹${data.amount}
 
         </p>
@@ -461,25 +554,32 @@ async function loadDashboard() {
 
         </button>
 
+
       </div>
 
-      `;
+    `;
+
 
   }
 
 
   catch (error) {
 
-    console.error(error);
+
+    console.error(
+      error
+    );
 
 
-    content.innerHTML =
-      `
+    content.innerHTML = `
 
       <div class="course-card">
 
+
         <h2>
+
           Verification Error
+
         </h2>
 
 
@@ -489,33 +589,104 @@ async function loadDashboard() {
 
         </p>
 
+
+        <button
+          class="start-btn"
+          onclick="loadDashboard()"
+        >
+
+          Try Again
+
+        </button>
+
+
       </div>
 
-      `;
+    `;
 
   }
 
 }
 
 
+
+// =================================
+// START COURSE
+// =================================
+
 function startCourse() {
 
+
+  const purchasedCourse =
+    JSON.parse(
+
+      localStorage.getItem(
+        "learnNovaPurchasedCourse"
+      )
+
+      || "{}"
+
+    );
+
+
   alert(
-    "Course learning section will open here!"
+
+    "Welcome to " +
+
+    (
+      purchasedCourse.courseName ||
+
+      "your course"
+    )
+
   );
+
 
 }
 
 
+
+// =================================
+// LOGOUT
+// =================================
+
 function logout() {
+
+
+  const confirmLogout =
+    confirm(
+
+      "Are you sure you want to logout?"
+
+    );
+
+
+  if (!confirmLogout) {
+
+    return;
+
+  }
+
 
   localStorage.removeItem(
     "learnNovaUser"
   );
 
+
   localStorage.removeItem(
     "learnNovaPendingPayment"
   );
+
+
+  localStorage.removeItem(
+    "learnNovaPayment"
+  );
+
+
+  localStorage.removeItem(
+    "learnNovaPurchasedCourse"
+  );
+
 
   window.location.href =
     "/";
@@ -523,7 +694,13 @@ function logout() {
 }
 
 
+
+// =================================
+// START
+// =================================
+
 loadDashboard();
+
 
 </script>
 
