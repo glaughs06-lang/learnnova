@@ -4,11 +4,14 @@
 <head>
   <meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <title>LearnNova - Learn Today. Lead Tomorrow.</title>
+  <title>LearnNova - Online Courses</title>
 
-  <!-- Razorpay Checkout -->
+  <!-- Razorpay Checkout Script -->
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
   <style>
@@ -17,352 +20,182 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
     }
 
     body {
-      background: #f7f8fc;
+      font-family: Arial, sans-serif;
+      background: #f5f5f7;
       color: #1f2937;
     }
 
-    /* NAVBAR */
+    /* HEADER */
 
-    nav {
+    header {
       background: white;
-      padding: 18px 7%;
+      padding: 20px 7%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
     }
 
     .logo {
-      font-size: 28px;
+      font-size: 32px;
       font-weight: bold;
-      color: #6b5cff;
+      color: #3730a3;
     }
 
-    .nav-right {
+    .logo span {
+      color: #111827;
+    }
+
+    .user-area {
       display: flex;
       align-items: center;
-      gap: 18px;
-    }
-
-    .nav-links {
-      display: flex;
       gap: 20px;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: #374151;
+      font-size: 18px;
       font-weight: bold;
     }
 
-    .nav-links a:hover {
-      color: #6b5cff;
-    }
-
-    .user-name {
-      color: #6b5cff;
-      font-weight: bold;
-    }
-
-    .btn {
-      border: none;
-      padding: 13px 22px;
-      border-radius: 10px;
-      background: #6b5cff;
+    .logout-btn {
+      background: #3730a3;
       color: white;
-      font-size: 15px;
-      font-weight: bold;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 12px;
       cursor: pointer;
-    }
-
-    .btn:hover {
-      opacity: 0.9;
+      font-size: 16px;
     }
 
     /* HERO */
 
     .hero {
-      padding: 90px 7%;
       text-align: center;
-      background: linear-gradient(135deg, #f1efff, #ffffff);
+      padding: 70px 20px;
     }
 
     .hero h1 {
-      font-size: 58px;
-      line-height: 1.15;
-    }
-
-    .hero h1 span {
-      color: #6b5cff;
+      font-size: 52px;
+      margin-bottom: 20px;
     }
 
     .hero p {
-      max-width: 700px;
-      margin: 25px auto;
-      font-size: 19px;
+      font-size: 22px;
       color: #6b7280;
-      line-height: 1.6;
-    }
-
-    .hero-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 30px;
-    }
-
-    .secondary {
-      background: white;
-      color: #6b5cff;
-      border: 2px solid #6b5cff;
-    }
-
-    /* STATS */
-
-    .stats {
-      background: white;
-      padding: 35px 7%;
-      display: flex;
-      justify-content: center;
-      gap: 70px;
-      flex-wrap: wrap;
-    }
-
-    .stat {
-      text-align: center;
-    }
-
-    .stat h2 {
-      color: #6b5cff;
-      font-size: 30px;
-    }
-
-    .stat p {
-      color: #6b7280;
-      margin-top: 8px;
     }
 
     /* COURSES */
 
     .courses {
-      padding: 80px 7%;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 45px;
-    }
-
-    .section-title h2 {
-      font-size: 40px;
-    }
-
-    .section-title p {
-      color: #6b7280;
-      margin-top: 12px;
+      width: 90%;
+      max-width: 1100px;
+      margin: auto;
+      padding-bottom: 60px;
     }
 
     .course-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 25px;
     }
 
     .course-card {
       background: white;
-      padding: 28px;
-      border-radius: 18px;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
       transition: 0.3s;
     }
 
     .course-card:hover {
-      transform: translateY(-6px);
+      transform: translateY(-7px);
     }
 
     .course-icon {
-      font-size: 42px;
-      margin-bottom: 18px;
+      font-size: 50px;
+      margin-bottom: 20px;
     }
 
     .course-card h3 {
-      font-size: 22px;
-      margin-bottom: 12px;
+      font-size: 26px;
+      margin-bottom: 15px;
     }
 
     .course-card p {
       color: #6b7280;
       line-height: 1.6;
+      margin-bottom: 20px;
     }
 
     .price {
-      margin: 20px 0;
-      color: #6b5cff;
-      font-size: 22px;
+      font-size: 30px;
       font-weight: bold;
+      color: #3730a3;
+      margin-bottom: 20px;
     }
 
     .enroll-btn {
       width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      background: #3730a3;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
     }
 
-    /* WHY SECTION */
-
-    .why {
-      background: white;
-      padding: 80px 7%;
+    .enroll-btn:hover {
+      background: #4f46e5;
     }
 
-    .features {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-    }
-
-    .feature {
-      background: #f7f8fc;
-      padding: 25px;
-      border-radius: 15px;
-    }
-
-    .feature h3 {
-      margin-bottom: 12px;
-    }
-
-    .feature p {
-      color: #6b7280;
-      line-height: 1.6;
+    .enroll-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     /* FOOTER */
 
     footer {
-      background: #1f2937;
+      background: #111827;
       color: white;
       text-align: center;
-      padding: 40px 20px;
+      padding: 25px;
     }
 
-    /* POPUP */
+    @media (max-width: 600px) {
 
-    .popup {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.55);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      padding: 20px;
-    }
-
-    .popup-box {
-      background: white;
-      width: 100%;
-      max-width: 400px;
-      padding: 35px;
-      border-radius: 20px;
-      position: relative;
-    }
-
-    .popup-box h2 {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-
-    .popup-box p {
-      text-align: center;
-      color: #6b7280;
-      margin-bottom: 20px;
-    }
-
-    .close {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 30px;
-      cursor: pointer;
-      color: #6b7280;
-    }
-
-    .popup input {
-      width: 100%;
-      padding: 14px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      font-size: 15px;
-    }
-
-    .popup .btn {
-      width: 100%;
-    }
-
-    .switch-text {
-      margin-top: 18px;
-      text-align: center;
-      color: #6b7280;
-    }
-
-    .switch-text span {
-      color: #6b5cff;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    /* MOBILE */
-
-    @media (max-width: 1000px) {
-
-      .course-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .features {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-    }
-
-    @media (max-width: 700px) {
-
-      nav {
-        padding: 15px 20px;
-      }
-
-      .nav-links {
-        display: none;
+      header {
+        padding: 15px;
       }
 
       .logo {
-        font-size: 24px;
+        font-size: 25px;
+      }
+
+      .user-area {
+        gap: 10px;
+        font-size: 15px;
+      }
+
+      .logout-btn {
+        padding: 10px 16px;
       }
 
       .hero {
-        padding: 70px 20px;
+        padding: 50px 20px;
       }
 
       .hero h1 {
-        font-size: 40px;
+        font-size: 38px;
       }
 
-      .hero-buttons {
-        flex-direction: column;
-      }
-
-      .course-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .features {
-        grid-template-columns: 1fr;
+      .hero p {
+        font-size: 18px;
       }
 
     }
@@ -371,40 +204,36 @@
 
 </head>
 
+
 <body>
 
-  <!-- NAVBAR -->
 
-  <nav>
+  <!-- HEADER -->
+
+  <header>
 
     <div class="logo">
       🎓 LearnNova
     </div>
 
-    <div class="nav-right">
 
-      <div class="nav-links">
-        <a href="#">Home</a>
-        <a href="#courses">Courses</a>
-        <a href="#about">About</a>
-      </div>
+    <div class="user-area">
 
-      <span
-        id="userName"
-        class="user-name"
-      ></span>
+      <span>
+        Hi, Gopal
+      </span>
 
       <button
-        id="loginButton"
-        class="btn"
-        onclick="openLogin()"
+        class="logout-btn"
+        onclick="logout()"
       >
-        Login
+        Logout
       </button>
 
     </div>
 
-  </nav>
+  </header>
+
 
 
   <!-- HERO -->
@@ -412,77 +241,20 @@
   <section class="hero">
 
     <h1>
-      Learn Skills.<br>
-      Build Your <span>Future.</span>
+      Explore Popular Courses
     </h1>
 
     <p>
-      Learn in-demand skills and build your future with LearnNova.
+      Learn the skills companies demand.
     </p>
 
-    <div class="hero-buttons">
-
-      <button
-        class="btn"
-        onclick="goToCourses()"
-      >
-        Explore Courses
-      </button>
-
-      <button
-        class="btn secondary"
-        onclick="openSignup()"
-      >
-        Start Learning Free
-      </button>
-
-    </div>
-
   </section>
 
-
-  <!-- STATS -->
-
-  <section class="stats">
-
-    <div class="stat">
-      <h2>10,000+</h2>
-      <p>Active Students</p>
-    </div>
-
-    <div class="stat">
-      <h2>50+</h2>
-      <p>Courses</p>
-    </div>
-
-    <div class="stat">
-      <h2>25+</h2>
-      <p>Mentors</p>
-    </div>
-
-    <div class="stat">
-      <h2>4.9 ⭐</h2>
-      <p>Rating</p>
-    </div>
-
-  </section>
 
 
   <!-- COURSES -->
 
-  <section
-    class="courses"
-    id="courses"
-  >
-
-    <div class="section-title">
-
-      <h2>Explore Popular Courses</h2>
-
-      <p>Learn the skills companies demand.</p>
-
-    </div>
-
+  <section class="courses">
 
     <div class="course-grid">
 
@@ -491,91 +263,118 @@
 
       <div class="course-card">
 
-        <div class="course-icon">💻</div>
+        <div class="course-icon">
+          💻
+        </div>
 
-        <h3>Web Development</h3>
+        <h3>
+          Web Development
+        </h3>
 
         <p>
           Learn HTML, CSS and JavaScript.
         </p>
 
-        <div class="price">₹499</div>
+        <div class="price">
+          ₹499
+        </div>
 
         <button
-          class="btn enroll-btn"
-          onclick="enrollCourse('Web Development', 499)"
+          class="enroll-btn"
+          onclick="enrollCourse('web_development')"
         >
           Enroll Now
         </button>
 
       </div>
+
 
 
       <!-- ETHICAL HACKING -->
 
       <div class="course-card">
 
-        <div class="course-icon">🛡️</div>
+        <div class="course-icon">
+          🛡️
+        </div>
 
-        <h3>Ethical Hacking</h3>
+        <h3>
+          Ethical Hacking
+        </h3>
 
         <p>
           Learn cybersecurity and ethical hacking.
         </p>
 
-        <div class="price">₹799</div>
+        <div class="price">
+          ₹799
+        </div>
 
         <button
-          class="btn enroll-btn"
-          onclick="enrollCourse('Ethical Hacking', 799)"
+          class="enroll-btn"
+          onclick="enrollCourse('ethical_hacking')"
         >
           Enroll Now
         </button>
 
       </div>
+
 
 
       <!-- DIGITAL MARKETING -->
 
       <div class="course-card">
 
-        <div class="course-icon">📈</div>
+        <div class="course-icon">
+          📈
+        </div>
 
-        <h3>Digital Marketing</h3>
+        <h3>
+          Digital Marketing
+        </h3>
 
         <p>
           Learn social media and online marketing.
         </p>
 
-        <div class="price">₹199</div>
+        <div class="price">
+          ₹199
+        </div>
 
         <button
-          class="btn enroll-btn"
-          onclick="enrollCourse('Digital Marketing', 199)"
+          class="enroll-btn"
+          onclick="enrollCourse('digital_marketing')"
         >
           Enroll Now
         </button>
 
       </div>
+
 
 
       <!-- AFFILIATE MARKETING -->
 
       <div class="course-card">
 
-        <div class="course-icon">🤝</div>
+        <div class="course-icon">
+          💰
+        </div>
 
-        <h3>Affiliate Marketing</h3>
+        <h3>
+          Affiliate Marketing
+        </h3>
 
         <p>
           Learn how affiliate marketing works.
         </p>
 
-        <div class="price">₹149</div>
+        <div class="price">
+          ₹149
+        </div>
 
         <button
-          class="btn enroll-btn"
-          onclick="enrollCourse('Affiliate Marketing', 149)"
+          class="enroll-btn"
+          onclick="enrollCourse('affiliate_marketing')"
         >
           Enroll Now
         </button>
@@ -588,551 +387,86 @@
   </section>
 
 
-  <!-- WHY LEARNNOVA -->
-
-  <section
-    class="why"
-    id="about"
-  >
-
-    <div class="section-title">
-
-      <h2>Why LearnNova?</h2>
-
-      <p>A smarter way to learn.</p>
-
-    </div>
-
-
-    <div class="features">
-
-      <div class="feature">
-
-        <h3>🎥 Video Learning</h3>
-
-        <p>
-          Learn anytime with quality lessons.
-        </p>
-
-      </div>
-
-
-      <div class="feature">
-
-        <h3>📊 Track Progress</h3>
-
-        <p>
-          Track your learning journey.
-        </p>
-
-      </div>
-
-
-      <div class="feature">
-
-        <h3>🏆 Certificates</h3>
-
-        <p>
-          Earn certificates after completion.
-        </p>
-
-      </div>
-
-
-      <div class="feature">
-
-        <h3>🤖 AI Assistant</h3>
-
-        <p>
-          Get help while learning.
-        </p>
-
-      </div>
-
-    </div>
-
-  </section>
-
 
   <!-- FOOTER -->
 
   <footer>
 
-    <h3>🎓 LearnNova</h3>
-
-    <p style="margin-top:10px;">
-      Learn Today. Lead Tomorrow.
-    </p>
-
-    <p style="margin-top:20px;">
-      © 2026 LearnNova
-    </p>
+    © 2026 LearnNova. All Rights Reserved.
 
   </footer>
 
 
-  <!-- LOGIN POPUP -->
-
-  <div
-    id="loginPopup"
-    class="popup"
-  >
-
-    <div class="popup-box">
-
-      <span
-        class="close"
-        onclick="closePopup()"
-      >
-        ×
-      </span>
-
-      <h2>Welcome Back 👋</h2>
-
-      <p>Login to continue learning.</p>
-
-      <input
-        type="email"
-        id="loginEmail"
-        placeholder="Email"
-      >
-
-      <input
-        type="password"
-        id="loginPassword"
-        placeholder="Password"
-      >
-
-      <button
-        class="btn"
-        onclick="loginUser()"
-      >
-        Login
-      </button>
-
-      <div class="switch-text">
-
-        New here?
-
-        <span onclick="openSignup()">
-          Create Account
-        </span>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- SIGNUP POPUP -->
-
-  <div
-    id="signupPopup"
-    class="popup"
-  >
-
-    <div class="popup-box">
-
-      <span
-        class="close"
-        onclick="closePopup()"
-      >
-        ×
-      </span>
-
-      <h2>Join LearnNova 🎓</h2>
-
-      <p>Create your account.</p>
-
-      <input
-        type="text"
-        id="signupName"
-        placeholder="Your Name"
-      >
-
-      <input
-        type="email"
-        id="signupEmail"
-        placeholder="Email"
-      >
-
-      <input
-        type="password"
-        id="signupPassword"
-        placeholder="Password"
-      >
-
-      <button
-        class="btn"
-        onclick="signupUser()"
-      >
-        Create Account
-      </button>
-
-      <div class="switch-text">
-
-        Already have an account?
-
-        <span onclick="openLogin()">
-          Login
-        </span>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- JAVASCRIPT -->
 
   <script>
 
-    /*
-      Razorpay Key ID
 
-      Key Secret यहाँ नहीं डालना है.
-    */
+    /* =============================
 
-    const RAZORPAY_KEY_ID =
-      "rzp_test_TZ0gwDFGXRJYS4";
+       RAZORPAY PAYMENT FUNCTION
 
+    ============================= */
 
-    function goToCourses() {
 
-      document
-        .getElementById("courses")
-        .scrollIntoView({
-          behavior: "smooth"
-        });
-
-    }
-
-
-    function openLogin() {
-
-      closePopup();
-
-      document
-        .getElementById("loginPopup")
-        .style.display = "flex";
-
-    }
-
-
-    function openSignup() {
-
-      closePopup();
-
-      document
-        .getElementById("signupPopup")
-        .style.display = "flex";
-
-    }
-
-
-    function closePopup() {
-
-      document
-        .getElementById("loginPopup")
-        .style.display = "none";
-
-      document
-        .getElementById("signupPopup")
-        .style.display = "none";
-
-    }
-
-
-    function signupUser() {
-
-      const name =
-        document
-        .getElementById("signupName")
-        .value
-        .trim();
-
-      const email =
-        document
-        .getElementById("signupEmail")
-        .value
-        .trim();
-
-      const password =
-        document
-        .getElementById("signupPassword")
-        .value;
-
-
-      if (!name || !email || !password) {
-
-        alert(
-          "Please fill all details."
-        );
-
-        return;
-
-      }
-
-
-      const user = {
-
-        name: name,
-        email: email,
-        password: password
-
-      };
-
-
-      localStorage.setItem(
-        "learnNovaUser",
-        JSON.stringify(user)
-      );
-
-
-      localStorage.setItem(
-        "learnNovaLoggedIn",
-        "true"
-      );
-
-
-      closePopup();
-
-      updateUser();
-
-
-      alert(
-        "Account created successfully! 🎉"
-      );
-
-    }
-
-
-    function loginUser() {
-
-      const email =
-        document
-        .getElementById("loginEmail")
-        .value
-        .trim();
-
-      const password =
-        document
-        .getElementById("loginPassword")
-        .value;
-
-
-      const savedUser =
-        localStorage.getItem(
-          "learnNovaUser"
-        );
-
-
-      if (!savedUser) {
-
-        alert(
-          "No account found. Please create an account first."
-        );
-
-        openSignup();
-
-        return;
-
-      }
-
-
-      const user =
-        JSON.parse(savedUser);
-
-
-      if (
-        email === user.email &&
-        password === user.password
-      ) {
-
-        localStorage.setItem(
-          "learnNovaLoggedIn",
-          "true"
-        );
-
-
-        closePopup();
-
-        updateUser();
-
-
-        alert(
-          "Login successful! 🎉"
-        );
-
-      }
-
-      else {
-
-        alert(
-          "Incorrect email or password."
-        );
-
-      }
-
-    }
-
-
-    function logoutUser() {
-
-      localStorage.removeItem(
-        "learnNovaLoggedIn"
-      );
-
-      updateUser();
-
-      alert(
-        "Logged out successfully."
-      );
-
-    }
-
-
-    function updateUser() {
-
-      const savedUser =
-        localStorage.getItem(
-          "learnNovaUser"
-        );
-
-      const loggedIn =
-        localStorage.getItem(
-          "learnNovaLoggedIn"
-        );
-
-
-      const userName =
-        document
-        .getElementById(
-          "userName"
-        );
-
-
-      const loginButton =
-        document
-        .getElementById(
-          "loginButton"
-        );
-
-
-      if (
-        savedUser &&
-        loggedIn === "true"
-      ) {
-
-        const user =
-          JSON.parse(
-            savedUser
-          );
-
-
-        userName.innerText =
-          "Hi, " + user.name;
-
-
-        loginButton.innerText =
-          "Logout";
-
-
-        loginButton.onclick =
-          logoutUser;
-
-      }
-
-      else {
-
-        userName.innerText =
-          "";
-
-
-        loginButton.innerText =
-          "Login";
-
-
-        loginButton.onclick =
-          openLogin;
-
-      }
-
-    }
-
-
-    async function enrollCourse(
-      courseName,
-      price
-    ) {
-
-      const loggedIn =
-        localStorage.getItem(
-          "learnNovaLoggedIn"
-        );
-
-
-      if (
-        loggedIn !== "true"
-      ) {
-
-        alert(
-          "Please login first."
-        );
-
-        openLogin();
-
-        return;
-
-      }
-
+    async function enrollCourse(courseId) {
 
       try {
 
-        /*
-          Backend से Razorpay Order बनाना
-        */
+        console.log(
+          "Creating order for:",
+          courseId
+        );
 
-        const response =
-          await fetch(
-            "/create-order",
-            {
 
-              method: "POST",
+        /* CREATE ORDER */
 
-              headers: {
+        const response = await fetch(
 
-                "Content-Type":
-                  "application/json"
+          "/create-order",
 
-              },
+          {
+            method: "POST",
 
-              body:
-                JSON.stringify({
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
 
-                  courseName:
-                    courseName,
+            body: JSON.stringify({
 
-                  amount:
-                    price
+              courseId: courseId
 
-                })
+            })
 
-            }
-          );
+          }
+
+        );
 
 
         const data =
           await response.json();
 
 
-        if (!data.success) {
+        console.log(
+          "Server response:",
+          data
+        );
+
+
+        if (
+
+          !response.ok ||
+
+          !data.success
+
+        ) {
 
           alert(
-            data.message ||
+
+            data.error ||
+
             "Unable to create payment order."
+
           );
 
           return;
@@ -1140,115 +474,146 @@
         }
 
 
+
+        /* RAZORPAY OPTIONS */
+
         const options = {
 
           key:
-            RAZORPAY_KEY_ID,
+
+            "rzp_test_TZ0gwDFGXRJYS4",
 
 
           amount:
+
             data.order.amount,
 
 
           currency:
+
             data.order.currency,
 
 
           name:
+
             "LearnNova",
 
 
           description:
-            courseName,
+
+            data.course,
 
 
           order_id:
+
             data.order.id,
 
 
           handler:
 
-            async function(response) {
+            async function (response) {
+
 
               try {
 
+
+                /* VERIFY PAYMENT */
+
                 const verifyResponse =
                   await fetch(
+
                     "/verify-payment",
+
                     {
 
-                      method:
-                        "POST",
+                      method: "POST",
 
 
                       headers: {
 
                         "Content-Type":
+
                           "application/json"
 
                       },
 
 
                       body:
+
                         JSON.stringify({
 
                           razorpay_order_id:
-                            response
-                            .razorpay_order_id,
+
+                            response.razorpay_order_id,
 
 
                           razorpay_payment_id:
-                            response
-                            .razorpay_payment_id,
+
+                            response.razorpay_payment_id,
 
 
                           razorpay_signature:
-                            response
-                            .razorpay_signature
+
+                            response.razorpay_signature
 
                         })
 
                     }
+
                   );
 
 
                 const verifyData =
+
                   await verifyResponse.json();
 
 
                 if (
+
                   verifyData.success
+
                 ) {
 
+
                   alert(
-                    "Payment successful! 🎉 You are enrolled in " +
-                    courseName
+
+                    "Payment Successful! 🎉\n\nWelcome to LearnNova."
+
                   );
+
 
                 }
 
                 else {
 
+
                   alert(
+
                     "Payment verification failed."
+
                   );
 
+
                 }
+
 
               }
 
               catch (error) {
 
-                console.error(
-                  error
-                );
+
+                console.error(error);
 
 
                 alert(
+
                   "Payment verification error."
+
                 );
 
+
               }
+
 
             },
 
@@ -1256,11 +621,8 @@
           prefill: {
 
             name:
-              getUserName(),
 
-
-            email:
-              getUserEmail()
+              "Gopal"
 
           },
 
@@ -1268,96 +630,77 @@
           theme: {
 
             color:
-              "#6b5cff"
+
+              "#3730a3"
 
           }
+
 
         };
 
 
+
+        /* OPEN RAZORPAY */
+
         const razorpay =
+
           new Razorpay(
+
             options
+
           );
 
 
         razorpay.open();
 
+
       }
+
 
       catch (error) {
 
+
         console.error(
+
+          "Payment Error:",
+
           error
+
         );
 
 
         alert(
-          "Payment server error. Please try again."
+
+          "Unable to create payment order."
+
         );
 
-      }
-
-    }
-
-
-    function getUserName() {
-
-      const savedUser =
-        localStorage.getItem(
-          "learnNovaUser"
-        );
-
-
-      if (!savedUser) {
-
-        return "";
 
       }
 
 
-      const user =
-        JSON.parse(
-          savedUser
-        );
-
-
-      return user.name;
-
     }
 
 
-    function getUserEmail() {
 
-      const savedUser =
-        localStorage.getItem(
-          "learnNovaUser"
-        );
+    /* LOGOUT */
 
 
-      if (!savedUser) {
-
-        return "";
-
-      }
+    function logout() {
 
 
-      const user =
-        JSON.parse(
-          savedUser
-        );
+      alert(
 
+        "Logged out successfully."
 
-      return user.email;
+      );
+
 
     }
 
-
-    /* PAGE LOAD */
-
-    updateUser();
 
   </script>
+
 
 </body>
 
