@@ -1,13 +1,12 @@
 {
   "name": "learnnova",
   "version": "1.0.0",
-  "description": "LearnNova Online Learning Platform",
+  "description": "LearnNova Online Courses",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "razorpay": "^2.9.4"
+    "express": "^4.21.2"
   }
 }
