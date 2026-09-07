@@ -1051,7 +1051,55 @@ function logout() {
 
 
 </script>
+<script>
+function updateNavbar() {
 
+  const user =
+    localStorage.getItem(
+      "learnNovaUser"
+    );
+
+  const authArea =
+    document.getElementById(
+      "authArea"
+    );
+
+  if (!authArea) return;
+
+  if (user) {
+
+    authArea.innerHTML = `
+      <button onclick="window.location.href='/dashboard.html'">
+        My Dashboard
+      </button>
+
+      <button onclick="logout()">
+        Logout
+      </button>
+    `;
+
+  } else {
+
+    authArea.innerHTML = `
+      <button onclick="window.location.href='/login.html'">
+        Login
+      </button>
+    `;
+
+  }
+
+}
+
+function logout() {
+
+  localStorage.removeItem("learnNovaUser");
+
+  window.location.href = "/";
+
+}
+
+updateNavbar();
+</script>
 
 </body>
 
