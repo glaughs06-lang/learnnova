@@ -1,708 +1,4 @@
-<!DOCTYPE html>
-
-<html lang="en">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
->
-
-<title>LearnNova</title>
-
-
-<style>
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-
-body {
-
-  font-family:
-    Arial,
-    sans-serif;
-
-  background:
-    #f5f7fb;
-
-  color:
-    #1f2937;
-
-}
-
-
-/* =========================
-   HEADER
-========================= */
-
-header {
-
-  background:
-    white;
-
-  padding:
-    20px 7%;
-
-  display:
-    flex;
-
-  justify-content:
-    space-between;
-
-  align-items:
-    center;
-
-  box-shadow:
-    0 2px 10px
-    rgba(
-      0,
-      0,
-      0,
-      0.08
-    );
-
-}
-
-
-.logo {
-
-  font-size:
-    30px;
-
-  font-weight:
-    bold;
-
-  color:
-    #3730a3;
-
-}
-
-
-.logo span {
-
-  margin-right:
-    8px;
-
-}
-
-
-.user-section {
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  gap:
-    20px;
-
-  font-size:
-    18px;
-
-  font-weight:
-    bold;
-
-}
-
-
-.logout-btn {
-
-  border:
-    none;
-
-  background:
-    #312e81;
-
-  color:
-    white;
-
-  padding:
-    12px 24px;
-
-  border-radius:
-    12px;
-
-  cursor:
-    pointer;
-
-}
-
-
-/* =========================
-   HERO
-========================= */
-
-.hero {
-
-  text-align:
-    center;
-
-  padding:
-    70px 20px;
-
-}
-
-
-.hero h1 {
-
-  font-size:
-    55px;
-
-  margin-bottom:
-    20px;
-
-  color:
-    #111827;
-
-}
-
-
-.hero p {
-
-  font-size:
-    22px;
-
-  color:
-    #6b7280;
-
-}
-
-
-/* =========================
-   COURSES
-========================= */
-
-.courses {
-
-  width:
-    90%;
-
-  max-width:
-    1100px;
-
-  margin:
-    auto;
-
-  display:
-    grid;
-
-  grid-template-columns:
-    repeat(
-      auto-fit,
-      minmax(
-        250px,
-        1fr
-      )
-    );
-
-  gap:
-    25px;
-
-  padding-bottom:
-    70px;
-
-}
-
-
-.course-card {
-
-  background:
-    white;
-
-  padding:
-    30px;
-
-  border-radius:
-    20px;
-
-  box-shadow:
-    0 10px 30px
-    rgba(
-      0,
-      0,
-      0,
-      0.08
-    );
-
-}
-
-
-.course-icon {
-
-  font-size:
-    45px;
-
-  margin-bottom:
-    15px;
-
-}
-
-
-.course-card h2 {
-
-  margin-bottom:
-    15px;
-
-}
-
-
-.course-card p {
-
-  color:
-    #6b7280;
-
-  line-height:
-    1.6;
-
-}
-
-
-.price {
-
-  margin:
-    25px 0;
-
-  font-size:
-    32px;
-
-  font-weight:
-    bold;
-
-  color:
-    #312e81;
-
-}
-
-
-.enroll-btn {
-
-  width:
-    100%;
-
-  border:
-    none;
-
-  padding:
-    16px;
-
-  border-radius:
-    12px;
-
-  background:
-    #3730a3;
-
-  color:
-    white;
-
-  font-size:
-    18px;
-
-  font-weight:
-    bold;
-
-  cursor:
-    pointer;
-
-}
-
-
-.enroll-btn:disabled {
-
-  opacity:
-    0.6;
-
-  cursor:
-    not-allowed;
-
-}
-
-
-/* =========================
-   FOOTER
-========================= */
-
-footer {
-
-  text-align:
-    center;
-
-  padding:
-    30px;
-
-  background:
-    #111827;
-
-  color:
-    white;
-
-}
-
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (
-  max-width: 600px
-) {
-
-  header {
-
-    padding:
-      18px 20px;
-
-  }
-
-
-  .logo {
-
-    font-size:
-      25px;
-
-  }
-
-
-  .user-section {
-
-    gap:
-      10px;
-
-  }
-
-
-  #userName {
-
-    display:
-      none;
-
-  }
-
-
-  .hero h1 {
-
-    font-size:
-      42px;
-
-  }
-
-
-  .hero {
-
-    padding:
-      60px 20px;
-
-  }
-
-}
-
-</style>
-
-</head>
-
-
-<body>
-
-
-<!-- =========================
-     HEADER
-========================= -->
-
-<header>
-
-<div class="logo">
-
-🎓 LearnNova
-
-</div>
-
-
-<div class="user-section">
-
-<span>
-
-Hi,
-<span id="userName">
-
-Student
-
-</span>
-
-</span>
-
-
-<button
-class="logout-btn"
-onclick="logout()"
->
-
-Logout
-
-</button>
-
-</div>
-
-</header>
-
-
-
-<!-- =========================
-     HERO
-========================= -->
-
-<section class="hero">
-
-<h1>
-
-Explore Popular
-Courses
-
-</h1>
-
-
-<p>
-
-Learn the skills
-companies demand.
-
-</p>
-
-</section>
-
-
-
-<!-- =========================
-     COURSES
-========================= -->
-
-<section class="courses">
-
-
-<!-- WEB DEVELOPMENT -->
-
-<div class="course-card">
-
-<div class="course-icon">
-
-💻
-
-</div>
-
-
-<h2>
-
-Web Development
-
-</h2>
-
-
-<p>
-
-Learn HTML, CSS,
-JavaScript and modern
-web development.
-
-</p>
-
-
-<div class="price">
-
-₹499
-
-</div>
-
-
-<button
-class="enroll-btn"
-onclick="enrollCourse(
-'web_development',
-this
-)"
->
-
-Enroll Now
-
-</button>
-
-</div>
-
-
-
-<!-- ETHICAL HACKING -->
-
-<div class="course-card">
-
-<div class="course-icon">
-
-🛡️
-
-</div>
-
-
-<h2>
-
-Ethical Hacking
-
-</h2>
-
-
-<p>
-
-Learn cybersecurity,
-ethical hacking and
-security fundamentals.
-
-</p>
-
-
-<div class="price">
-
-₹799
-
-</div>
-
-
-<button
-class="enroll-btn"
-onclick="enrollCourse(
-'ethical_hacking',
-this
-)"
->
-
-Enroll Now
-
-</button>
-
-</div>
-
-
-
-<!-- DIGITAL MARKETING -->
-
-<div class="course-card">
-
-<div class="course-icon">
-
-📈
-
-</div>
-
-
-<h2>
-
-Digital Marketing
-
-</h2>
-
-
-<p>
-
-Learn social media,
-SEO and online
-marketing skills.
-
-</p>
-
-
-<div class="price">
-
-₹199
-
-</div>
-
-
-<button
-class="enroll-btn"
-onclick="enrollCourse(
-'digital_marketing',
-this
-)"
->
-
-Enroll Now
-
-</button>
-
-</div>
-
-
-
-<!-- AFFILIATE MARKETING -->
-
-<div class="course-card">
-
-<div class="course-icon">
-
-🤝
-
-</div>
-
-
-<h2>
-
-Affiliate Marketing
-
-</h2>
-
-
-<p>
-
-Learn how affiliate
-marketing works and
-how to grow online.
-
-</p>
-
-
-<div class="price">
-
-₹149
-
-</div>
-
-
-<button
-class="enroll-btn"
-onclick="enrollCourse(
-'affiliate_marketing',
-this
-)"
->
-
-Enroll Now
-
-</button>
-
-</div>
-
-
-</section>
-
-
-
-<footer>
-
-© 2026 LearnNova.
-All Rights Reserved.
-
-</footer>
-
-
-
 <script>
-
-
-/* =========================
-   GET USER DETAILS
-========================= */
 
 function getUser() {
 
@@ -711,13 +7,11 @@ function getUser() {
       "learnNovaUser"
     );
 
-
   if (!savedUser) {
 
     return null;
 
   }
-
 
   try {
 
@@ -727,8 +21,7 @@ function getUser() {
 
   }
 
-
-  catch (error) {
+  catch {
 
     return null;
 
@@ -737,15 +30,10 @@ function getUser() {
 }
 
 
-/* =========================
-   DISPLAY USER NAME
-========================= */
-
 function updateUserName() {
 
   const user =
     getUser();
-
 
   if (
     user &&
@@ -767,10 +55,9 @@ function updateUserName() {
 updateUserName();
 
 
-
-/* =========================
-   ENROLL COURSE
-========================= */
+// =====================================
+// ENROLL COURSE
+// =====================================
 
 async function enrollCourse(
   courseId,
@@ -787,100 +74,50 @@ async function enrollCourse(
       getUser();
 
 
-    // ---------------------------------
-    // GET CUSTOMER DETAILS
-    // ---------------------------------
-
-    let customerName =
+    const customerName =
       user?.name ||
-      prompt(
-        "Enter your name:"
-      );
+      prompt("Enter your name");
 
 
-    let customerEmail =
+    const customerEmail =
       user?.email ||
-      prompt(
-        "Enter your email:"
-      );
+      prompt("Enter your email");
 
 
-    let customerPhone =
+    const customerPhone =
       user?.phone ||
       prompt(
-        "Enter your 10 digit mobile number:"
+        "Enter your 10 digit mobile number"
       );
 
 
     if (
       !customerName ||
+      !customerEmail ||
       !customerPhone
     ) {
 
       alert(
-        "Name and mobile number are required."
+        "Please enter all details."
       );
 
       return;
 
     }
 
-
-    customerPhone =
-      customerPhone
-        .replace(
-          /\D/g,
-          ""
-        );
-
-
-    // Remove Indian country code
-    if (
-      customerPhone.length === 12 &&
-      customerPhone.startsWith(
-        "91"
-      )
-    ) {
-
-      customerPhone =
-        customerPhone.substring(
-          2
-        );
-
-    }
-
-
-    if (
-      customerPhone.length !== 10
-    ) {
-
-      alert(
-        "Please enter a valid 10 digit mobile number."
-      );
-
-      return;
-
-    }
-
-
-    // ---------------------------------
-    // BUTTON LOADING
-    // ---------------------------------
 
     button.disabled =
       true;
 
     button.innerText =
-      "Creating Payment Link...";
+      "Opening Payment...";
 
-
-    // ---------------------------------
-    // CREATE PAYMENT LINK
-    // ---------------------------------
 
     const response =
       await fetch(
+
         "/create-payment-link",
+
         {
 
           method:
@@ -896,21 +133,18 @@ async function enrollCourse(
           body:
             JSON.stringify({
 
-              courseId:
-                courseId,
+              courseId,
 
-              customerName:
-                customerName,
+              customerName,
 
-              customerEmail:
-                customerEmail,
+              customerEmail,
 
-              customerPhone:
-                customerPhone
+              customerPhone
 
             })
 
         }
+
       );
 
 
@@ -918,60 +152,33 @@ async function enrollCourse(
       await response.json();
 
 
-    // ---------------------------------
-    // CHECK ERROR
-    // ---------------------------------
-
     if (
       !response.ok ||
       !data.success
     ) {
 
-      console.error(
-        data
-      );
-
-
-      alert(
+      throw new Error(
         data.error ||
-        "Unable to create payment link. Please try again."
+        "Payment error"
       );
-
-      return;
 
     }
 
 
-    // ---------------------------------
-    // SAVE PAYMENT DETAILS
-    // ---------------------------------
+    // Save link ID
+    // Payment के बाद इसी से verify करेंगे
 
     localStorage.setItem(
 
-      "learnNovaPayment",
+      "learnNovaPendingPayment",
 
-      JSON.stringify({
-
-        linkId:
-          data.linkId,
-
-        course:
-          data.course,
-
-        amount:
-          data.amount
-
-      })
+      data.linkId
 
     );
 
 
-    // ---------------------------------
-    // REDIRECT TO CASHFREE
-    // ---------------------------------
-
     button.innerText =
-      "Redirecting...";
+      "Redirecting to Payment...";
 
 
     window.location.href =
@@ -982,14 +189,11 @@ async function enrollCourse(
 
   catch (error) {
 
-    console.error(
-      "PAYMENT ERROR:",
-      error
-    );
-
+    console.error(error);
 
     alert(
-      "Payment server error. Please try again."
+      error.message ||
+      "Payment server error"
     );
 
   }
@@ -998,7 +202,8 @@ async function enrollCourse(
   finally {
 
     setTimeout(
-      function () {
+
+      () => {
 
         button.disabled =
           false;
@@ -1008,7 +213,7 @@ async function enrollCourse(
 
       },
 
-      2000
+      1500
 
     );
 
@@ -1017,48 +222,23 @@ async function enrollCourse(
 }
 
 
-
-/* =========================
-   LOGOUT
-========================= */
+// =====================================
+// LOGOUT
+// =====================================
 
 function logout() {
-
-  const confirmLogout =
-    confirm(
-      "Are you sure you want to logout?"
-    );
-
-
-  if (!confirmLogout) {
-
-    return;
-
-  }
-
 
   localStorage.removeItem(
     "learnNovaUser"
   );
 
-
   localStorage.removeItem(
-    "learnNovaPayment"
+    "learnNovaPendingPayment"
   );
 
-
-  alert(
-    "Logged out successfully."
-  );
-
-
-  window.location.reload();
+  window.location.href =
+    "/";
 
 }
 
 </script>
-
-
-</body>
-
-</html>
