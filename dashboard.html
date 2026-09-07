@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+LearnNova Dashboard
+</title>
+
+
+<style>
+
+* {
+
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+}
+
+
+body {
+
+  font-family:
+    Arial,
+    sans-serif;
+
+  background:
+    #f5f7fb;
+
+  color:
+    #1f2937;
+
+}
+
+
+header {
+
+  background:
+    white;
+
+  padding:
+    20px 7%;
+
+  display:
+    flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  box-shadow:
+    0 2px 10px
+    rgba(
+      0,
+      0,
+      0,
+      0.08
+    );
+
+}
+
+
+.logo {
+
+  font-size:
+    28px;
+
+  font-weight:
+    bold;
+
+  color:
+    #3730a3;
+
+}
+
+
+.logout-btn {
+
+  border:
+    none;
+
+  background:
+    #312e81;
+
+  color:
+    white;
+
+  padding:
+    12px 20px;
+
+  border-radius:
+    10px;
+
+  cursor:
+    pointer;
+
+}
+
+
+.container {
+
+  max-width:
+    900px;
+
+  margin:
+    auto;
+
+  padding:
+    60px 20px;
+
+}
+
+
+h1 {
+
+  margin-bottom:
+    10px;
+
+}
+
+
+.subtitle {
+
+  color:
+    #6b7280;
+
+  margin-bottom:
+    35px;
+
+}
+
+
+.course-card {
+
+  background:
+    white;
+
+  padding:
+    30px;
+
+  border-radius:
+    18px;
+
+  box-shadow:
+    0 10px 30px
+    rgba(
+      0,
+      0,
+      0,
+      0.08
+    );
+
+}
+
+
+.course-card h2 {
+
+  margin-bottom:
+    15px;
+
+}
+
+
+.success {
+
+  color:
+    #16a34a;
+
+  font-weight:
+    bold;
+
+  margin-bottom:
+    15px;
+
+}
+
+
+.start-btn {
+
+  margin-top:
+    20px;
+
+  border:
+    none;
+
+  background:
+    #3730a3;
+
+  color:
+    white;
+
+  padding:
+    14px 25px;
+
+  border-radius:
+    10px;
+
+  font-size:
+    16px;
+
+  cursor:
+    pointer;
+
+}
+
+
+.loading {
+
+  text-align:
+    center;
+
+  padding:
+    50px;
+
+  font-size:
+    20px;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<div class="logo">
+
+🎓 LearnNova
+
+</div>
+
+
+<button
+class="logout-btn"
+onclick="logout()"
+>
+
+Logout
+
+</button>
+
+</header>
+
+
+
+<div class="container">
+
+<h1>
+
+My Dashboard
+
+</h1>
+
+
+<p class="subtitle">
+
+Your purchased courses
+appear here.
+
+</p>
+
+
+<div
+id="content"
+class="loading"
+>
+
+Verifying your payment...
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+
+async function loadDashboard() {
+
+  const content =
+    document.getElementById(
+      "content"
+    );
+
+
+  const linkId =
+    localStorage.getItem(
+      "learnNovaPendingPayment"
+    );
+
+
+  if (!linkId) {
+
+    content.innerHTML =
+      `
+      <div class="course-card">
+        <h2>No pending payment found</h2>
+        <p>
+          Please purchase a course first.
+        </p>
+      </div>
+      `;
+
+    return;
+
+  }
+
+
+  try {
+
+    const response =
+      await fetch(
+
+        "/verify-payment/" +
+        encodeURIComponent(
+          linkId
+        )
+
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      !response.ok ||
+      !data.success
+    ) {
+
+      throw new Error(
+        data.error ||
+        "Unable to verify payment"
+      );
+
+    }
+
+
+    if (!data.paid) {
+
+      content.innerHTML =
+        `
+        <div class="course-card">
+
+          <h2>
+            Payment not completed
+          </h2>
+
+          <p>
+            Current payment status:
+            <strong>
+              ${data.status}
+            </strong>
+          </p>
+
+          <button
+            class="start-btn"
+            onclick="window.location.href='/'"
+          >
+            Back to Courses
+          </button>
+
+        </div>
+        `;
+
+      return;
+
+    }
+
+
+    // PAYMENT SUCCESSFUL
+
+    localStorage.setItem(
+
+      "learnNovaPurchasedCourse",
+
+      JSON.stringify({
+
+        linkId:
+          data.linkId,
+
+        courseName:
+          data.courseName,
+
+        amount:
+          data.amount
+
+      })
+
+    );
+
+
+    localStorage.removeItem(
+      "learnNovaPendingPayment"
+    );
+
+
+    content.innerHTML =
+      `
+
+      <div class="course-card">
+
+        <div class="success">
+
+          ✓ Payment Successful
+
+        </div>
+
+
+        <h2>
+
+          ${data.courseName}
+
+        </h2>
+
+
+        <p>
+
+          Congratulations!
+          Your course has been unlocked.
+
+        </p>
+
+
+        <p
+          style="
+            margin-top:10px;
+            color:#6b7280;
+          "
+        >
+
+          Amount Paid:
+          ₹${data.amount}
+
+        </p>
+
+
+        <button
+          class="start-btn"
+          onclick="startCourse()"
+        >
+
+          Start Learning
+
+        </button>
+
+      </div>
+
+      `;
+
+  }
+
+
+  catch (error) {
+
+    console.error(error);
+
+
+    content.innerHTML =
+      `
+
+      <div class="course-card">
+
+        <h2>
+          Verification Error
+        </h2>
+
+
+        <p>
+
+          ${error.message}
+
+        </p>
+
+      </div>
+
+      `;
+
+  }
+
+}
+
+
+function startCourse() {
+
+  alert(
+    "Course learning section will open here!"
+  );
+
+}
+
+
+function logout() {
+
+  localStorage.removeItem(
+    "learnNovaUser"
+  );
+
+  localStorage.removeItem(
+    "learnNovaPendingPayment"
+  );
+
+  window.location.href =
+    "/";
+
+}
+
+
+loadDashboard();
+
+</script>
+
+
+</body>
+
+</html>
