@@ -1,14 +1,9 @@
 const express = require("express");
 const path = require("path");
-const crypto = require("crypto");
 
 const app = express();
 
-app.set("trust proxy", 1);
-
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 app.use(express.static(__dirname));
 
 
@@ -21,9 +16,6 @@ const CASHFREE_BASE_URL =
     ? "https://api.cashfree.com/pg"
     : "https://sandbox.cashfree.com/pg";
 
-const CASHFREE_API_VERSION =
-  "2025-01-01";
-
 
 // =====================================
 // COURSES
@@ -32,129 +24,26 @@ const CASHFREE_API_VERSION =
 const courses = {
 
   web_development: {
-    id: "web_development",
     name: "Web Development",
-    amount: 499,
-    icon: "💻",
-    description:
-      "Learn HTML, CSS, JavaScript and modern web development."
+    amount: 499
   },
 
   ethical_hacking: {
-    id: "ethical_hacking",
     name: "Ethical Hacking",
-    amount: 799,
-    icon: "🛡️",
-    description:
-      "Learn cybersecurity, ethical hacking and security fundamentals."
+    amount: 799
   },
 
   digital_marketing: {
-    id: "digital_marketing",
     name: "Digital Marketing",
-    amount: 199,
-    icon: "📈",
-    description:
-      "Learn social media, SEO and online marketing skills."
+    amount: 199
   },
 
   affiliate_marketing: {
-    id: "affiliate_marketing",
     name: "Affiliate Marketing",
-    amount: 149,
-    icon: "🤝",
-    description:
-      "Learn how affiliate marketing works and how to grow online."
+    amount: 149
   }
 
 };
-
-
-// =====================================
-// CASHFREE HEADERS
-// =====================================
-
-function getCashfreeHeaders() {
-
-  return {
-
-    "Content-Type":
-      "application/json",
-
-    "x-api-version":
-      CASHFREE_API_VERSION,
-
-    "x-client-id":
-      process.env.CASHFREE_CLIENT_ID,
-
-    "x-client-secret":
-      process.env.CASHFREE_CLIENT_SECRET
-
-  };
-
-}
-
-
-// =====================================
-// GET WEBSITE BASE URL
-// =====================================
-
-function getBaseUrl(req) {
-
-  if (
-    process.env.APP_URL
-  ) {
-
-    return process.env.APP_URL
-      .replace(/\/$/, "");
-
-  }
-
-
-  const protocol =
-    req.get("x-forwarded-proto") ||
-    req.protocol;
-
-
-  return (
-    protocol +
-    "://" +
-    req.get("host")
-  );
-
-}
-
-
-// =====================================
-// CHECK ENVIRONMENT VARIABLES
-// =====================================
-
-function checkCashfreeKeys(
-  req,
-  res,
-  next
-) {
-
-  if (
-    !process.env.CASHFREE_CLIENT_ID ||
-    !process.env.CASHFREE_CLIENT_SECRET
-  ) {
-
-    return res.status(500).json({
-
-      success: false,
-
-      error:
-        "Cashfree API keys are not configured"
-
-    });
-
-  }
-
-
-  next();
-
-}
 
 
 // =====================================
@@ -163,24 +52,38 @@ function checkCashfreeKeys(
 
 app.post(
   "/create-payment-link",
-  checkCashfreeKeys,
   async (req, res) => {
 
     try {
 
       const {
-
         courseId,
         customerName,
         customerEmail,
         customerPhone
-
       } = req.body;
 
 
-      // ---------------------------------
-      // VALIDATE COURSE
-      // ---------------------------------
+      // CHECK KEYS
+
+      if (
+        !process.env.CASHFREE_CLIENT_ID ||
+        !process.env.CASHFREE_CLIENT_SECRET
+      ) {
+
+        return res.status(500).json({
+
+          success: false,
+
+          error:
+            "Cashfree keys are not configured on the server"
+
+        });
+
+      }
+
+
+      // CHECK COURSE
 
       const course =
         courses[courseId];
@@ -200,13 +103,11 @@ app.post(
       }
 
 
-      // ---------------------------------
-      // VALIDATE CUSTOMER
-      // ---------------------------------
+      // CHECK PHONE
 
       if (
-        !customerName ||
-        !customerPhone
+        !customerPhone ||
+        customerPhone.length !== 10
       ) {
 
         return res.status(400).json({
@@ -214,83 +115,32 @@ app.post(
           success: false,
 
           error:
-            "Name and mobile number are required"
+            "Valid 10 digit phone number is required"
 
         });
 
       }
 
 
-      let cleanPhone =
-        String(
-          customerPhone
-        ).replace(
-          /\D/g,
-          ""
-        );
-
-
-      if (
-        cleanPhone.length === 12 &&
-        cleanPhone.startsWith(
-          "91"
-        )
-      ) {
-
-        cleanPhone =
-          cleanPhone.substring(2);
-
-      }
-
-
-      if (
-        cleanPhone.length !== 10
-      ) {
-
-        return res.status(400).json({
-
-          success: false,
-
-          error:
-            "Please enter a valid 10 digit mobile number"
-
-        });
-
-      }
-
-
-      // ---------------------------------
-      // UNIQUE PAYMENT LINK ID
-      // ---------------------------------
+      // UNIQUE LINK ID
 
       const linkId =
         "LN_" +
         Date.now() +
         "_" +
-        crypto
-          .randomBytes(4)
-          .toString("hex");
-
-
-      const baseUrl =
-        getBaseUrl(req);
-
-
-      // ---------------------------------
-      // PAYMENT SUCCESS RETURN URL
-      // ---------------------------------
-
-      const returnUrl =
-        baseUrl +
-        "/payment-success?link_id=" +
-        encodeURIComponent(
-          linkId
+        Math.floor(
+          Math.random() * 100000
         );
 
 
-      // ---------------------------------
-      // CASHFREE PAYMENT DATA
-      // ---------------------------------
+      // WEBSITE URL
+
+      const websiteUrl =
+        "https://" +
+        req.get("host");
+
+
+      // PAYMENT DATA
 
       const paymentData = {
 
@@ -310,60 +160,27 @@ app.post(
         link_partial_payments:
           false,
 
+        link_notify:
+          true,
+
+
+        link_return_url:
+          websiteUrl +
+          "/dashboard.html",
+
 
         customer_details: {
 
           customer_name:
-            customerName,
+            customerName ||
+            "LearnNova Student",
 
           customer_email:
             customerEmail ||
             "",
 
           customer_phone:
-            cleanPhone
-
-        },
-
-
-        // ---------------------------------
-        // SAVE COURSE DETAILS
-        // ---------------------------------
-
-        link_notes: {
-
-          course_id:
-            course.id,
-
-          course_name:
-            course.name
-
-        },
-
-
-        // ---------------------------------
-        // RETURN TO LEARNNOVA
-        // ---------------------------------
-
-        link_meta: {
-
-          return_url:
-            returnUrl
-
-        },
-
-
-        // ---------------------------------
-        // DON'T SEND EXTRA SMS/EMAIL
-        // ---------------------------------
-
-        link_notify: {
-
-          send_sms:
-            false,
-
-          send_email:
-            false
+            customerPhone
 
         }
 
@@ -371,10 +188,12 @@ app.post(
 
 
       console.log(
-        "Creating Cashfree payment link:",
+        "Creating payment link:",
         linkId
       );
 
+
+      // CASHFREE REQUEST
 
       const cashfreeResponse =
         await fetch(
@@ -387,8 +206,21 @@ app.post(
             method:
               "POST",
 
-            headers:
-              getCashfreeHeaders(),
+            headers: {
+
+              "Content-Type":
+                "application/json",
+
+              "x-api-version":
+                "2025-01-01",
+
+              "x-client-id":
+                process.env.CASHFREE_CLIENT_ID,
+
+              "x-client-secret":
+                process.env.CASHFREE_CLIENT_SECRET
+
+            },
 
             body:
               JSON.stringify(
@@ -410,27 +242,19 @@ app.post(
       );
 
 
-      // ---------------------------------
-      // HANDLE CASHFREE ERROR
-      // ---------------------------------
+      // CASHFREE ERROR
 
-      if (
-        !cashfreeResponse.ok
-      ) {
+      if (!cashfreeResponse.ok) {
 
         return res.status(
           cashfreeResponse.status
         ).json({
 
-          success:
-            false,
+          success: false,
 
           error:
-
             cashfreeData.message ||
-
             cashfreeData.error ||
-
             "Unable to create payment link"
 
         });
@@ -438,23 +262,20 @@ app.post(
       }
 
 
-      // ---------------------------------
-      // SUCCESS
-      // ---------------------------------
+      // SEND RESPONSE
 
       return res.json({
 
-        success:
-          true,
+        success: true,
+
+        linkId:
+          cashfreeData.link_id,
 
         paymentLink:
           cashfreeData.link_url,
 
-        linkId:
-          linkId,
-
-        course:
-          course,
+        courseName:
+          course.name,
 
         amount:
           course.amount
@@ -474,11 +295,11 @@ app.post(
 
       return res.status(500).json({
 
-        success:
-          false,
+        success: false,
 
         error:
-          "Payment server error. Please try again."
+          error.message ||
+          "Payment server error"
 
       });
 
@@ -489,13 +310,11 @@ app.post(
 
 
 // =====================================
-// VERIFY PAYMENT WITH CASHFREE
+// VERIFY PAYMENT
 // =====================================
 
 app.get(
   "/verify-payment/:linkId",
-
-  checkCashfreeKeys,
 
   async (req, res) => {
 
@@ -503,6 +322,12 @@ app.get(
 
       const linkId =
         req.params.linkId;
+
+
+      console.log(
+        "Verifying payment:",
+        linkId
+      );
 
 
       const response =
@@ -516,8 +341,18 @@ app.get(
 
           {
 
-            headers:
-              getCashfreeHeaders()
+            headers: {
+
+              "x-api-version":
+                "2025-01-01",
+
+              "x-client-id":
+                process.env.CASHFREE_CLIENT_ID,
+
+              "x-client-secret":
+                process.env.CASHFREE_CLIENT_SECRET
+
+            }
 
           }
 
@@ -534,21 +369,16 @@ app.get(
       );
 
 
-      if (
-        !response.ok
-      ) {
+      if (!response.ok) {
 
         return res.status(
           response.status
         ).json({
 
-          success:
-            false,
+          success: false,
 
           error:
-
             data.message ||
-
             "Unable to verify payment"
 
         });
@@ -556,236 +386,34 @@ app.get(
       }
 
 
-      // ---------------------------------
-      // PAYMENT MUST BE PAID
-      // ---------------------------------
+      const paid =
+        data.link_status === "PAID";
+
+
+      // COURSE NAME
+
+      let courseName =
+        data.link_purpose ||
+        "LearnNova Course";
+
+
+      // REMOVE PREFIX
 
       if (
-        data.link_status !==
-        "PAID"
+        courseName.startsWith(
+          "LearnNova - "
+        )
       ) {
 
-        return res.json({
-
-          success:
-            false,
-
-          paid:
-            false,
-
-          status:
-            data.link_status ||
-
-            "UNKNOWN"
-
-        });
+        courseName =
+          courseName.replace(
+            "LearnNova - ",
+            ""
+          );
 
       }
 
-
-      // ---------------------------------
-      // GET COURSE FROM CASHFREE NOTES
-      // ---------------------------------
-
-      const courseId =
-        data.link_notes?.course_id;
-
-
-      const course =
-        courses[courseId];
-
-
-      if (!course) {
-
-        return res.status(500).json({
-
-          success:
-            false,
-
-          error:
-            "Course information could not be found"
-
-        });
-
-      }
-
-
-      // ---------------------------------
-      // SUCCESS
-      // ---------------------------------
 
       return res.json({
 
-        success:
-          true,
-
-        paid:
-          true,
-
-        status:
-          "PAID",
-
-        linkId:
-          data.link_id,
-
-        course:
-          course,
-
-        customer: {
-
-          name:
-            data.customer_details
-              ?.customer_name ||
-            "",
-
-          email:
-            data.customer_details
-              ?.customer_email ||
-            "",
-
-          phone:
-            data.customer_details
-              ?.customer_phone ||
-            ""
-
-        }
-
-      });
-
-    }
-
-
-    catch (error) {
-
-      console.error(
-        "VERIFY PAYMENT ERROR:",
-        error
-      );
-
-
-      return res.status(500).json({
-
-        success:
-          false,
-
-        error:
-          "Unable to verify payment"
-
-      });
-
-    }
-
-  }
-);
-
-
-// =====================================
-// PAYMENT SUCCESS
-// CASHFREE RETURNS HERE
-// =====================================
-
-app.get(
-  "/payment-success",
-
-  async (req, res) => {
-
-    const linkId =
-      req.query.link_id;
-
-
-    if (!linkId) {
-
-      return res.redirect(
-        "/dashboard?payment=missing"
-      );
-
-    }
-
-
-    // ---------------------------------
-    // AUTOMATIC DASHBOARD REDIRECT
-    // ---------------------------------
-
-    return res.redirect(
-
-      "/dashboard?link_id=" +
-
-      encodeURIComponent(
-        linkId
-      )
-
-    );
-
-  }
-);
-
-
-// =====================================
-// DASHBOARD PAGE
-// =====================================
-
-app.get(
-  "/dashboard",
-
-  (req, res) => {
-
-    res.sendFile(
-
-      path.join(
-        __dirname,
-        "index.html"
-      )
-
-    );
-
-  }
-);
-
-
-// =====================================
-// HOME PAGE
-// =====================================
-
-app.get(
-  "/",
-
-  (req, res) => {
-
-    res.sendFile(
-
-      path.join(
-        __dirname,
-        "index.html"
-      )
-
-    );
-
-  }
-);
-
-
-// =====================================
-// SERVER
-// =====================================
-
-const PORT =
-  process.env.PORT ||
-  3000;
-
-
-app.listen(
-
-  PORT,
-
-  () => {
-
-    console.log(
-
-      "LearnNova running on port " +
-      PORT
-
-    );
-
-  }
-
-);
+        success
